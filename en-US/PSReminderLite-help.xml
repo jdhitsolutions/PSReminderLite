@@ -255,7 +255,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>SQLite doesn't have a backup mechanism like SQL Server. You can use this command to export the reminder database to a cliXML file. You can use Import-PSReminderDatabase to restore it.</maml:para>
+      <maml:para>SQLite doesn't have a backup mechanism like SQL Server. You can use this command to export the reminder database to a JSON file. You can use Import-PSReminderDatabase to restore it.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -263,7 +263,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>The path and filename for the export XML file.</maml:para>
+            <maml:para>The path and filename for the export JSON file.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -336,7 +336,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
-          <maml:para>The path and filename for the export XML file.</maml:para>
+          <maml:para>The path and filename for the export JSON file.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -386,9 +386,9 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Export-PSReminderDatabase c:\temp\psrexport.xml</dev:code>
+        <dev:code>PS C:\&gt; Export-PSReminderDatabase c:\temp\psrexport.json</dev:code>
         <dev:remarks>
-          <maml:para>Export the database to a Clixml file.</maml:para>
+          <maml:para>Export the database to a JSON file.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -1077,7 +1077,7 @@ Age         Reminders Expired Archived
       <command:verb>Import</command:verb>
       <command:noun>PSReminderDatabase</command:noun>
       <maml:description>
-        <maml:para>Import PSReminder data from a Clixml file.</maml:para>
+        <maml:para>Import PSReminder data from a JSON file.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1089,7 +1089,7 @@ Age         Reminders Expired Archived
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>The path and filename for the exported XML file. It is assumed this file was created with Export-PSReminderDatabase.</maml:para>
+            <maml:para>The path and filename for the exported JSON file. It is assumed this file was created with Export-PSReminderDatabase.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1132,6 +1132,18 @@ Age         Reminders Expired Archived
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Comment</maml:name>
+          <maml:description>
+            <maml:para>Specify an optional comment for the database</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>'Imported PSReminderLite database'</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1162,7 +1174,7 @@ Age         Reminders Expired Archived
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
-          <maml:para>The path and filename for the exported XML file. It is assumed this file was created with Export-PSReminderDatabase.</maml:para>
+          <maml:para>The path and filename for the exported JSON file. It is assumed this file was created with Export-PSReminderDatabase.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1182,6 +1194,18 @@ Age         Reminders Expired Archived
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Comment</maml:name>
+        <maml:description>
+          <maml:para>Specify an optional comment for the database</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>'Imported PSReminderLite database'</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -1212,7 +1236,7 @@ Age         Reminders Expired Archived
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Import-PSReminderDatabase c:\temp\PSReminderExport.xml</dev:code>
+        <dev:code>PS C:\&gt; Import-PSReminderDatabase c:\temp\PSReminderExport.json</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

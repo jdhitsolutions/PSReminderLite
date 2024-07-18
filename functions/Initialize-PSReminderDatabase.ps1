@@ -6,7 +6,6 @@ Function Initialize-PSReminderDatabase {
             Position = 0,
             HelpMessage = 'Enter the full path for the SQLite database file. It should end in .db'
         )]
-        [ValidateScript( { Test-Path $_ })]
         [ValidatePattern('.*\.db$')]
         [ValidateNotNullOrEmpty()]
         [String]$DatabasePath = $PSReminderDB,

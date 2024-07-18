@@ -9,13 +9,14 @@ Function Add-PSReminder {
         [String]$EventName,
         [Parameter(Position = 1, ValueFromPipelineByPropertyName, Mandatory, HelpMessage = 'Enter the date and time for the event')]
         [ValidateScript( {
-                If ($_ -gt (Get-Date)) {
-                    $True
-                }
-                else {
-                    Throw 'You must enter a future date and time.'
-                }
-            })]
+            If ($_ -gt (Get-Date)) {
+                $True
+            }
+            else {
+                Throw 'You must enter a future date and time.'
+            }
+        })]
+        [Alias("EventDate")]
         [DateTime]$Date,
         [Parameter(Position = 2, ValueFromPipelineByPropertyName)]
         [String]$Comment,

@@ -7,9 +7,9 @@ Function Export-PSReminderDatabase {
         [Parameter(
             Position = 0,
             Mandatory,
-            HelpMessage = 'The path and filename for the export xml file.'
+            HelpMessage = 'The path and filename for the export JSON file.'
         )]
-        [ValidatePattern('\.xml$')]
+        [ValidatePattern('\.json$')]
         [String]$Path,
 
         [Parameter(HelpMessage = 'The path to the SQLite database')]
@@ -21,18 +21,13 @@ Function Export-PSReminderDatabase {
         Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
         Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
 
-        $InvokeParams = @{
-            Query       = "Select * from $PSReminderTable"
-            Path        = $DatabasePath
-            ErrorAction = 'Stop'
-        }
     } #begin
 
     Process {
         Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Exporting database $DatabasePath to $Path "
         if ($PSCmdlet.ShouldProcess($Path,"Exporting database $DatabasePath")) {
             Try {
-                Invoke-MySQLiteQuery @InvokeParams | Export-Clixml -Path $Path
+                Export-MySQLiteDB -Destination $Path -Path $DatabasePath -ErrorAction Stop
             }
             Catch {
                 throw $_

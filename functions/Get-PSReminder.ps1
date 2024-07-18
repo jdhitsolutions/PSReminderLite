@@ -82,7 +82,6 @@ Function Get-PSReminder {
             }
             'Archived' {
                 Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by Archive"
-                #TODO: Query from the archive table
                 $filter = "Select * from $PSReminderArchiveTable  ORDER by EventDate Asc"
             }
             'All' {
@@ -106,7 +105,12 @@ Function Get-PSReminder {
         Try {
             $events = Invoke-MySQLiteQuery @InvokeParams
             #convert the data into PSReminder objects
-            $data = $events | _NewPSReminder
+            if ($Archived) {
+                $data = $events | _NewArchivePSReminder
+            }
+            else {
+                $data = $events | _NewPSReminder
+            }
         }
         Catch {
             Throw $_

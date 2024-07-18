@@ -57,7 +57,23 @@ Class PSReminder {
         }
         $this.Countdown = $ts
     }
-} #close class
+} #close PSReminder class
+
+Class ArchivePSReminder {
+    [String]$Event
+    [DateTime]$Date
+    [String]$Comment
+    [int32]$ID
+    [DateTime]$ArchivedDate
+
+    ArchivePSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment, [DateTime]$ArchivedDate) {
+        $this.ID = $ID
+        $this.Event = $Event
+        $this.Date = $Date
+        $this.Comment = $Comment
+        $this.ArchivedDate = $ArchivedDate
+    }
+} #close ArchivePSReminder class
 
 Update-TypeData -TypeName PSReminder -DefaultDisplayPropertySet ID, Date, Event, Comment -Force
 Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name -Value Event -force

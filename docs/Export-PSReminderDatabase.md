@@ -19,17 +19,17 @@ Export-PSReminderDatabase [-Path] <String> [-DatabasePath <String>] [-WhatIf] [-
 
 ## DESCRIPTION
 
-SQLite doesn't have a backup mechanism like SQL Server. You can use this command to export the reminder database to a cliXML file. You can use Import-PSReminderDatabase to restore it.
+SQLite doesn't have a backup mechanism like SQL Server. You can use this command to export the reminder database to a JSON file. You can use Import-PSReminderDatabase to restore it.
 
 ## EXAMPLES
 
 ### Example 1
 
 ```powershell
-PS C:\> Export-PSReminderDatabase c:\temp\psrexport.xml
+PS C:\> Export-PSReminderDatabase c:\temp\psrexport.json
 ```
 
-Export the database to a Clixml file.
+Export the database to a JSON file.
 
 ## PARAMETERS
 
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 
 ### -Path
 
-The path and filename for the export XML file.
+The path and filename for the export JSON file.
 
 ```yaml
 Type: String

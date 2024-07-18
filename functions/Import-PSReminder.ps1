@@ -1,65 +1,60 @@
 Function Import-PSReminderDatabase {
     [CmdletBinding(SupportsShouldProcess)]
-    [OutputType("None")]
+    [OutputType('None')]
 
     Param(
         [Parameter(
             Position = 0,
             Mandatory,
-            HelpMessage = "The path and filename for the export xml file."
+            HelpMessage = 'The path and filename for the export JSON file.'
         )]
         [ValidateScript( { Test-Path $_ })]
-        [ValidatePattern('\.xml$')]
+        [ValidatePattern('\.json$')]
         [String]$Path,
 
         [Parameter(HelpMessage = 'The path to the SQLite database')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ Test-Path $_ })]
-        [string]$DatabasePath = $PSReminderDB
+        [string]$DatabasePath = $PSReminderDB,
+
+        [Parameter(HelpMessage = 'Specify an optional comment for the database')]
+        [string]$Comment = 'Imported PSReminderLite database'
     )
     Begin {
         Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
         Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
 
         $InvokeParams = @{
-            Query          = ""
+            Query       = ''
             Path        = $DatabasePath
-            ErrorAction    = "Stop"
+            ErrorAction = 'Stop'
         }
 
-        #turn off identity_insert
-#        $InvokeParams.query = "Set identity_insert EventData On"
-#        [void](_InvokeSqlQuery @InvokeParams)
     } #begin
 
     Process {
         Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Importing database data from $Path "
         Try {
-            Import-Clixml -Path $path | ForEach-Object {
-<#                 $query = @"
-Set identity_insert EventData On
-INSERT INTO EventData (EventID,EventDate,EventName,EventComment,Archived) VALUES ('$($_.EventID)','$($_.EventDate)','$(($_.EventName).replace("'",""))','$($_.EventComment)','$($_.Archived)')
-Set identity_insert EventData Off
-"@ #>
-                $query = @"
-INSERT INTO EventData (EventID,EventDate,EventName,EventComment) VALUES ('$($_.EventID)','$($_.EventDate)','$(($_.EventName).replace("'",""))','$($_.EventComment)')
-"@
-                $InvokeParams.query = $query
-
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $($InvokeParams.query)"
-
-                if ($PSCmdlet.ShouldProcess("VALUES ('$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)','$($_.Archived)'")) {
-                    Invoke-MySQLiteQuery @InvokeParams
-                }
+            #Create the new database
+            Initialize-PSReminderDatabase -DatabasePath $DatabasePath -Comment $Comment
+            #import event data
+            $Import = Get-Content -Path $Path | ConvertFrom-Json
+            $Import.EventData | ForEach-Object {
+                $InvokeParams.Query = "INSERT INTO $PSReminderTable (EventID,EventDate,EventName,EventComment) VALUES ('$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)')"
+                Invoke-MySQLiteQuery @InvokeParams
             }
-        }
+            #import the archive data
+            $Import.ArchivedEvent | ForEach-Object {
+                $InvokeParams.Query = "INSERT INTO $PSReminderArchiveTable (ArchivedEventID,EventID,EventDate,EventName,EventComment,ArchivedDate) VALUES ('$($_.ArchivedEventID)','$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)','$($_.ArchivedDate)')"
+                Invoke-MySQLiteQuery @InvokeParams
+            }
+        } #Try
         Catch {
             throw $_
         }
     } #process
 
     End {
+        Write-Host 'Import complete' -ForegroundColor Green
         Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
     } #end
-
 }
