@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>countdown</Name>
+      <ViewSelectedBy>
+        <TypeName>PSReminder</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>ID</Label>
+            <Width>4</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Event</Label>
+            <Width>35</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Comment</Label>
+            <Width>20</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Date</Label>
+            <Width>23</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Countdown</Label>
+            <Width>12</Width>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>ID</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>
+                If ($host.name -match "console|code") {
+                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
+                      "$([char]27)[91m$($_.Event)$([char]27)[0m"
+                  }
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
+                        "$([char]27)[93m$($_.Event)$([char]27)[0m"
+                  }
+                  else {
+                    $_.Event
+                  }
+                }
+                else {
+                  $_.Event
+                }
+                </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>
+                If ($host.name -match "console|code") {
+                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1 )) {
+                      "$([char]27)[91m$($_.Comment)$([char]27)[0m"
+                  }
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
+                        "$([char]27)[93m$($_.Comment)$([char]27)[0m"
+                  }
+                  else {
+                    $_.Comment
+                  }
+                }
+                else {
+                  $_.Comment
+                }
+                </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>
+                If ($host.name -match "console|code") {
+                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
+                      "$([char]27)[91m$($_.Date)$([char]27)[0m"
+                  }
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
+                        "$([char]27)[93m$($_.Date)$([char]27)[0m"
+                  }
+                  else {
+                    $_.Date
+                  }
+                }
+                else {
+                  $_.Date
+                }
+                </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Scriptblock> $count= $_.countdown.toString()
+                  if ($count.lastIndexOf('.') -gt 0) {
+                    $value = $count.substring(0,$count.lastIndexOf('.'))
+                  }
+                  else {
+                    $value = $count
+                  }
+                  If ($host.name -match "console|code") {
+                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
+                      "$([char]27)[91m$($value)$([char]27)[0m"
+                  }
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
+                        "$([char]27)[93m$($value)$([char]27)[0m"
+                  }
+                  else {
+                    $value
+                    }
+                  }
+                  else {
+                  $value
+                  }
+
+                </Scriptblock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>date</Name>
+      <ViewSelectedBy>
+        <TypeName>PSReminder</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>"{0:MMM yyyy}" -f $_.date</ScriptBlock>
+        <Label>Month</Label>
+      </GroupBy>
+      <TableControl>
+        <!--Delete the AutoSize node if you want to use the defined widths.
+        <AutoSize />-->
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>ID</Label>
+            <Width>6</Width>
+            <Alignment>left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Event</Label>
+            <Width>25</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Comment</Label>
+            <Width>14</Width>
+            <Alignment>left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Date</Label>
+            <Width>23</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>ID</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Event</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Comment</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Date</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <!--Created 07/17/2024 20:05:16 by THINKX1-JH\Jeff-->
+      <Name>default</Name>
+      <ViewSelectedBy>
+        <TypeName>PSReminderDBInfo</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <ScriptBlock>"{0} [{1}KB]" -f $_.Path,$($_.Size/1KB)</ScriptBlock>
+        <Label>Database</Label>
+      </GroupBy>
+      <TableControl>
+        <!--Delete the AutoSize node if you want to use the defined widths.-->
+        <AutoSize />
+        <TableHeaders>
+            <TableColumnHeader>
+              <Label>Age</Label>
+              <Width>19</Width>
+              <Alignment>left</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+            <Label>Reminders</Label>
+            <Width>12</Width>
+            <Alignment>right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Expired</Label>
+            <Width>10</Width>
+            <Alignment>right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Archived</Label>
+            <Width>11</Width>
+            <Alignment>right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock>"{0:dd\.hh\:mm\:ss}" -f $_.Age</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Reminders</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Expired</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Archived</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
