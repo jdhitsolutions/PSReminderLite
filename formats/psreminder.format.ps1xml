@@ -49,6 +49,9 @@
                   elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
                         "$([char]27)[93m$($_.Event)$([char]27)[0m"
                   }
+                  elseif ($_.Expired) {
+                    "$([char]27)[9;38;5;163m$($_.event)$([char]27)[0m"
+                  }
                   else {
                     $_.Event
                   }
