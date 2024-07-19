@@ -11,7 +11,7 @@ Function Export-PSReminderPreference {
         Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
         Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
         $PSReminderVariables = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
-        'PSReminderArchiveTable')
+        'PSReminderArchiveTable','PSReminderTag')
     } #begin
 
     Process {

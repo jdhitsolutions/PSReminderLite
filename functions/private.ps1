@@ -16,10 +16,13 @@ function _NewPSReminder {
         [DateTime]$EventDate,
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('Comment')]
-        [String]$EventComment
+        [String]$EventComment,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [String]$Tags
     )
     Process {
-        New-Object -TypeName PSReminder -ArgumentList @($eventID, $EventName, $EventDate, $EventComment)
+        $TagArray = $Tags -split ','
+        New-Object -TypeName PSReminder -ArgumentList @($eventID, $EventName, $EventDate, $EventComment,$TagArray)
     }
 } #close _NewPSReminder
 

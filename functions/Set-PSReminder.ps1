@@ -17,6 +17,8 @@ Function Set-PSReminder {
         [DateTime]$Date,
         [Parameter(HelpMessage = 'The new comment for the event')]
         [String]$Comment,
+        [Parameter(HelpMessage = 'Specify an optional array of tags')]
+        [String[]]$Tags,
         [Parameter(HelpMessage = 'Return the updated event')]
         [Switch]$PassThru,
         [Parameter(HelpMessage = 'The path to the SQLite database')]
@@ -54,6 +56,10 @@ SET {0} Where EventID='{1}'
         if ($Date) {
             $isoDate = $Date.ToString('yyyy-MM-dd HH:mm:ss')
             $cols += "EventDate='$isoDate'"
+        }
+        if ($Tags) {
+            $tagArray = $Tags -join ','
+            $cols += "Tags='$tagArray'"
         }
 
         $data = $cols -join ','

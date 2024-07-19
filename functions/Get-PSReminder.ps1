@@ -26,10 +26,12 @@ Function Get-PSReminder {
         [Switch]$Archived,
         [ValidateScript( { $_ -gt 0 })]
         [Parameter(ParameterSetName = 'Days')]
-        [Parameter(ParameterSetName = 'Offline')]
         [Alias('days')]
         [Int]$Next = $PSReminderDefaultDays,
-
+        [Parameter(HelpMessage ="Select reminders by a tag",ParameterSetName = 'Tag')]
+        [SupportsWildcards()]
+        [ValidateNotNullOrEmpty()]
+        [String]$Tag,
         [Parameter(HelpMessage = 'The path to the SQLite database')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ Test-Path $_ })]
@@ -88,6 +90,11 @@ Function Get-PSReminder {
                 Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] All"
                 #get all non archived events
                 $filter = "Select * from $PSReminderTable ORDER by EventDate Asc"
+            }
+            'Tag' {
+                $Tag = $Tag -replace '\*','%'
+                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by tag $Tag"
+                $filter = "Select * from $PSReminderTable where Tags LIKE '%$Tag' ORDER by EventDate Asc"
             }
             Default {
                 #this should never get called

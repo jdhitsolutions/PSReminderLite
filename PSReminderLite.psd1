@@ -3,7 +3,7 @@
 #
 @{
     RootModule           = 'PSReminderLite.psm1'
-    ModuleVersion        = '0.1.0'
+    ModuleVersion        = '0.2.0'
     CompatiblePSEditions = 'Core'
     GUID                 = 'f28fb1d9-ea07-4c22-a160-570fb3c092d8'
     Author               = 'Jeff Hicks'
@@ -20,7 +20,7 @@
         'Move-PSReminder','Get-AboutPSReminder')
     CmdletsToExport      = @()
     VariablesToExport    = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
-        'PSReminderArchiveTable')
+        'PSReminderArchiveTable','PSReminderTag')
     AliasesToExport      = @('apsr', 'gpsr', 'spsr', 'rpsr','Archive-PSReminder')
     PrivateData          = @{
         PSData = @{

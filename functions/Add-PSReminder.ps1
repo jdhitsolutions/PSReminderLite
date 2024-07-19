@@ -4,10 +4,20 @@ Function Add-PSReminder {
     [Alias('apsr')]
 
     Param(
-        [Parameter(Position = 0, ValueFromPipelineByPropertyName, Mandatory, HelpMessage = 'Enter the name of the event')]
+        [Parameter(
+            Mandatory,
+            Position = 0,
+            ValueFromPipelineByPropertyName,
+            HelpMessage = 'Enter the name of the event'
+        )]
         [Alias('Name')]
         [String]$EventName,
-        [Parameter(Position = 1, ValueFromPipelineByPropertyName, Mandatory, HelpMessage = 'Enter the date and time for the event')]
+        [Parameter(
+            Mandatory,
+            Position = 1,
+            ValueFromPipelineByPropertyName,
+            HelpMessage = 'Enter the date and time for the event'
+        )]
         [ValidateScript( {
             If ($_ -gt (Get-Date)) {
                 $True
@@ -18,8 +28,18 @@ Function Add-PSReminder {
         })]
         [Alias("EventDate")]
         [DateTime]$Date,
-        [Parameter(Position = 2, ValueFromPipelineByPropertyName)]
+        [Parameter(
+            Position = 2,
+            ValueFromPipelineByPropertyName,
+            HelpMessage = 'Enter an optional comment'
+        )]
         [String]$Comment,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName,
+            HelpMessage = 'Specify an optional array of tags'
+        )]
+        [String[]]$Tags,
 
         [Parameter(HelpMessage = 'The path to the SQLite database')]
         [ValidateNotNullOrEmpty()]
@@ -47,15 +67,14 @@ Function Add-PSReminder {
 
         #The date must for formatted as yyyy-MM-dd HH:mm:ss
         $ISODate = $Date.ToString('yyyy-MM-dd HH:mm:ss')
-        $InvokeParams.query = "INSERT INTO EventData (EventDate,EventName,EventComment) VALUES ('$ISODate','$theEvent','$Comment')"
+        [string]$TagString = $Tags -join ","
+        $InvokeParams.query = "INSERT INTO EventData (EventDate,EventName,EventComment,Tags) VALUES ('$ISODate','$theEvent','$Comment','$TagString')"
 
         $short = "[$ISODate] $Event"
         if ($PSCmdlet.ShouldProcess($short)) {
             Try {
                 Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $($InvokeParams.query)"
-
                 Invoke-MySQLiteQuery @InvokeParams
-
             } #try
             Catch {
                 throw $_

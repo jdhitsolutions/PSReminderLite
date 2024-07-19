@@ -16,37 +16,43 @@ Get one or more PSReminder entries.
 ### Days (Default)
 
 ```yaml
-Get-PSReminder [-Next <Int32>] [-DatabasePath <String>] [<CommonParameters>]
+Get-PSReminder [-Next <Int32>] [-DatabasePath <String>]  [<CommonParameters>]
 ```
 
 ### ID
+
 ```yaml
 Get-PSReminder [-Id <Int32>] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
 ### Name
+
 ```yaml
 Get-PSReminder [-EventName <String>] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
 ### All
+
 ```yaml
 Get-PSReminder [-All] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
 ### Expired
-```
+
+```yaml
 Get-PSReminder [-Expired] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
-### Archived
-```
-Get-PSReminder [-Archived] [-DatabasePath <String>] [<CommonParameters>]
+### Tag
+
+```yaml
+Get-PSReminder [-Tag <String>] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
-### Offline
-```
-Get-PSReminder [-Next <Int32>] [-DatabasePath <String>] [<CommonParameters>]
+### Archived
+
+```yaml
+Get-PSReminder [-Archived] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -66,6 +72,7 @@ ID   Event                               Comment              Date
 23   Vendor phone call                   include Gladys       07/19/2024 13:30:…
 1    Haircut                                                  7/24/2024 8:30:00…
 ```
+
 The default is to get reminders due in the next number of days defined in $PSReminderDefaultDays. The output will be color code. Events due within 24 hours will be red, and events due within 48 hours will be yellow.
 
 ### Example 2
@@ -204,7 +211,7 @@ Find events scheduled for the next number of days as defined by $PSReminderDefau
 
 ```yaml
 Type: Int32
-Parameter Sets: Days, Offline
+Parameter Sets: Days
 Aliases: days
 
 Required: False
@@ -212,6 +219,21 @@ Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
+```
+### -Tag
+
+Select reminders by a tag. Wildcards are supported.
+
+```yaml
+Type: String
+Parameter Sets: Tag
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: True
 ```
 
 ### CommonParameters

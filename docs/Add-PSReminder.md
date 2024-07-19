@@ -14,7 +14,8 @@ Add a PSReminder to the database.
 ## SYNTAX
 
 ```yaml
-Add-PSReminder [-EventName] <String> [-Date] <DateTime> [[-Comment] <String>] [-DatabasePath <String>] [-PassThru]  [-WhatIf] [-Confirm] [<CommonParameters>]
+Add-PSReminder [-EventName] <String> [-Date] <DateTime> [[-Comment] <String>] [-Tags <String[]>]
+ [-DatabasePath <String>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -26,7 +27,7 @@ Add a PSReminder to the database. The command will use the global PSReminder var
 ### Example 1
 
 ```powershell
-PS C:\> Add-PSReminder -EventName "HR Review" -Date "9/1/2024 4:00PM"
+PS C:\> Add-PSReminder -EventName "HR Review" -Date "9/1/2024 4:00PM" -Tags "Work"
 ```
 
 Add a reminder to the database.
@@ -67,7 +68,7 @@ Accept wildcard characters: False
 
 ### -DatabasePath
 
-The path to the SQLite database
+The path to the SQLite database.
 
 ```yaml
 Type: String
@@ -88,7 +89,7 @@ Enter the date and time for the event
 ```yaml
 Type: DateTime
 Parameter Sets: (All)
-Aliases:
+Aliases: EventDate
 
 Required: True
 Position: 1
@@ -126,6 +127,22 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tags
+
+Specify an optional array of tags
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

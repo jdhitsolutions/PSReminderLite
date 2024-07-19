@@ -14,7 +14,7 @@ Modify a PSReminder.
 ## SYNTAX
 
 ```yaml
-Set-PSReminder [-ID] <Int32> [-EventName <String>] [-Date <DateTime>] [-Comment <String>] [-PassThru] [-DatabasePath <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PSReminder [-ID] <Int32> [-EventName <String>] [-Date <DateTime>] [-Comment <String>] [-Tags <String[]>] [-PassThru] [-DatabasePath <String>]  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -26,10 +26,10 @@ Use this command to update or modify an existing PSReminder. This command will u
 ### Example 1
 
 ```powershell
-PS C:\> Set-PSReminder -ID 11 -Comment "Room 404" -date "8/18/2024 2:00PM"
+PS C:\> Set-PSReminder -ID 11 -Comment "Room 404" -date "8/18/2024 2:00PM" -tags "Work"
 ```
 
-Update the comment and date for the event with ID 11.
+Update the comment, date, and tags for the event with ID 11.
 
 ## PARAMETERS
 
@@ -39,7 +39,7 @@ The new comment for the event.
 
 ```yaml
 Type: String
-Parameter Sets: column
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 
 ### -DatabasePath
 
-The path to the SQLite database
+The path to the SQLite database.
 
 ```yaml
 Type: String
@@ -87,7 +87,7 @@ The new date for the event.
 
 ```yaml
 Type: DateTime
-Parameter Sets: column
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -103,7 +103,7 @@ The new name for the event.
 
 ```yaml
 Type: String
-Parameter Sets: column
+Parameter Sets: (All)
 Aliases: Name
 
 Required: False
@@ -135,6 +135,21 @@ Write the updated event to the pipeline.
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tags
+Specify an optional array of tags
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
