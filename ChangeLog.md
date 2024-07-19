@@ -5,10 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## [0.3.0] - 2024-07-19
+
 ### Changed
+
 - Revised `Get-PSReminderDBInformation` to include Author and Comment from the Metadata table.
 
 ### Fixed
+
 - Fixed parameter layout in help.
 
 ## [0.2.0] - 2024-07-19
@@ -31,4 +36,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial files and module structure.
 
 [Unreleased]: ENTER-URL-HERE
+[0.3.0]: ENTER-URL-HERE
 [0.2.0]: ENTER-URL-HERE
