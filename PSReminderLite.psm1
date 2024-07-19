@@ -44,6 +44,7 @@ else {
     $PSReminderTag = @{
         'Work'     = "`e[38;5;192m"
         'Personal' = "`e[96m"
+        'Priority' = "`e[1;3;38;5;199m"
     }
 }
 
@@ -90,7 +91,7 @@ Class ArchivePSReminder {
     [string[]]$Tags
     [DateTime]$ArchivedDate
 
-    ArchivePSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment, [DateTime]$ArchivedDate, [String[]]$Tags) {
+    ArchivePSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment,[String[]]$Tags, [DateTime]$ArchivedDate) {
         $this.ID = $ID
         $this.Event = $Event
         $this.Date = $Date
@@ -105,13 +106,27 @@ Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name 
 
 #endregion
 
+#region auto completers
+
+Register-ArgumentCompleter -CommandName Add-PSReminder,Set-PSReminder -ParameterName Tags -ScriptBlock {
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+
+    Get-PSReminderTag | Where-Object { $_.tag -like "$WordToComplete*"} |
+    ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag)
+    }
+}
+
+
+#endregion
+
 $export = @{
     Variable = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
         'PSReminderArchiveTable','PSReminderTag')
     Function = @('Export-PSReminderPreference', 'Initialize-PSReminderDatabase',
         'Add-PSReminder', 'Get-PSReminder', 'Get-PSReminderDBInformation', 'Set-PSReminder',
         'Remove-PSReminder', 'Export-PSReminderDatabase', 'Import-PSReminderDatabase',
-        'Move-PSReminder', 'Get-AboutPSReminder')
+        'Move-PSReminder', 'Get-AboutPSReminder','Get-PSReminderTag')
     Alias    = @('apsr', 'gpsr', 'spsr', 'rpsr', 'Archive-PSReminder')
 }
 Export-ModuleMember @export

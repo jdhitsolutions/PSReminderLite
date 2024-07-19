@@ -38,7 +38,8 @@ Function Move-PSReminder {
         2           EventDate       TEXT
         3           EventName       TEXT
         4           EventComment    TEXT
-        5           ArchivedDate    TEXT
+        5           Tags            TEXT
+        6           ArchivedDate    TEXT
         #>
         Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Processing EventID $ID"
         #always try to get the event
@@ -48,7 +49,7 @@ Function Move-PSReminder {
         if ($r -AND $PScmdlet.ShouldProcess($evt,"Archiving Event")) {
             #Move the event to the ArchivedEvent table
             Try {
-                $InvokeParams.query ="Insert into $PSReminderArchiveTable (EventID, EventName, EventDate, EventComment,ArchivedDate) values ('$($r.EventID)', '$($r.EventName)', '$($r.EventDate)', '$($r.EventComment)','$ArchiveDate')"
+                $InvokeParams.query ="Insert into $PSReminderArchiveTable (EventID, EventName, EventDate, EventComment,Tags,ArchivedDate) values ('$($r.EventID)', '$($r.EventName)', '$($r.EventDate)', '$($r.EventComment)','$($r.tags)','$ArchiveDate')"
                 #Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $($InvokeParams.query)"
                 Invoke-MySQLiteQuery @InvokeParams
                 #delete the event from the EventData table

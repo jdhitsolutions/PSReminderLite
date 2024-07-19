@@ -26,6 +26,7 @@ The module requires a 64-bit PowerShell 7 platform.
 - [Get-AboutPSReminder](docs/Get-AboutPSReminder.md)
 - [Get-PSReminder](docs/Get-PSReminder.md)
 - [Get-PSReminderDBInformation](docs/Get-PSReminderDBInformation.md)
+- [Get-PSReminderTag](docs/Get-PSReminderTag.md)
 - [Import-PSReminderDatabase](docs/Import-PSReminderDatabase.md)
 - [Initialize-PSReminderDatabase](docs/Initialize-PSReminderDatabase.md)
 - [Move-PSReminder](docs/Move-PSReminder.md)

@@ -53,14 +53,14 @@
                     "$([char]27)[9;38;5;163m$($_.event)$([char]27)[0m"
                   }
                   elseif (Test-Path Variable:PSReminderTag) {
-                    $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)}
+                    $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
+                    Select-Object -First 1
                     if ($Tagged) {
                       "$($PSReminderTag[$Tagged])$($_.event)$([char]27)[0m"
                     }
                     else {
                       $_.Event
                     }
-                    <!--"tagged:$($_.event)"-->
                   }
                   else {
                     $_.Event
@@ -108,7 +108,8 @@
                 </ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
-                <Scriptblock> $count= $_.countdown.toString()
+                <Scriptblock>
+                $count= $_.countdown.toString()
                   if ($count.lastIndexOf('.') -gt 0) {
                     $value = $count.substring(0,$count.lastIndexOf('.'))
                   }
@@ -287,7 +288,21 @@
                 <PropertyName>ID</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Event</PropertyName>
+                <ScriptBlock>
+                if ((Test-Path Variable:PSReminderTag) -AND ($host.name -match "console|vscode")) {
+                    $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
+                    Select-Object -First 1
+                    if ($Tagged) {
+                      "$($PSReminderTag[$Tagged])$($_.event)$([char]27)[0m"
+                    }
+                    else {
+                      $_.Event
+                    }
+                  }
+                  else {
+                    $_.Event
+                  }
+                </ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Comment</PropertyName>

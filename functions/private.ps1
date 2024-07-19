@@ -21,7 +21,7 @@ function _NewPSReminder {
         [String]$Tags
     )
     Process {
-        $TagArray = $Tags -split ','
+        [string[]]$TagArray = $Tags -split ',' | Foreach-Object {$_.Trim()}
         New-Object -TypeName PSReminder -ArgumentList @($eventID, $EventName, $EventDate, $EventComment,$TagArray)
     }
 } #close _NewPSReminder
@@ -44,9 +44,12 @@ function _NewArchivePSReminder {
         [Alias('Comment')]
         [String]$EventComment,
         [Parameter(ValueFromPipelineByPropertyName)]
+        [String]$Tags,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [DateTime]$ArchivedDate
     )
     Process {
-        New-Object -TypeName ArchivePSReminder -ArgumentList @($eventID, $EventName, $EventDate, $EventComment,$ArchivedDate)
+        [string[]]$TagArray = $Tags -split ',' | Foreach-Object {$_.Trim()}
+        New-Object -TypeName ArchivePSReminder -ArgumentList @($eventID, $EventName, $EventDate, $EventComment,$TagArray,$ArchivedDate)
     }
 } #close _NewPSReminder

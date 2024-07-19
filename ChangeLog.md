@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-07-19
+
+### Added
+
+- Added the $host name to the `Get-AboutPSReminder` output.
+- Added auto completers for the `-Tags` parameter of `Add-PSReminder` and `Set-PSReminder`.
+- Added tag formatting for Archived events to the formatting ps1xml file.
+- Added command `Get-PSReminderTag`.
+- Added `Priority` to the default tag list.
+- Added tag support for Archived events
+
+### Changed
+
+- Updated `Initialize-PSReminderDatabase` to add the `Tags` column to the database tables.
+
 ## [0.3.0] - 2024-07-19
 
 ### Changed
@@ -36,5 +51,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial files and module structure.
 
 [Unreleased]: ENTER-URL-HERE
+[0.4.0]: ENTER-URL-HERE
 [0.3.0]: ENTER-URL-HERE
 [0.2.0]: ENTER-URL-HERE

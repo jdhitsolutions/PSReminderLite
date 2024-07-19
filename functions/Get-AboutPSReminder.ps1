@@ -20,6 +20,7 @@ Function Get-AboutPSReminder {
             SQLiteVersion = (Get-MySQLiteDB -Path $PSReminderDB).SQLiteVersion
             PSVersion     = $PSVersionTable.PSVersion
             Platform      = $PSVersionTable.Platform
+            Host          = $Host.Name
         }
 
     } #process

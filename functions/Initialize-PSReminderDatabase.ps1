@@ -25,7 +25,8 @@ CREATE TABLE $PSReminderTable (
     EventID INTEGER PRIMARY KEY AUTOINCREMENT,
     EventDate TEXT NOT NULL,
     EventName TEXT NOT NULL,
-    EventComment TEXT
+    EventComment TEXT,
+    Tags TEXT
 );
 CREATE TABLE $PSReminderArchiveTable (
     ArchivedEventID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,6 +34,7 @@ CREATE TABLE $PSReminderArchiveTable (
     EventDate TEXT NOT NULL,
     EventName TEXT NOT NULL,
     EventComment TEXT,
+    Tags TEXT,
     ArchivedDate TEXT NOT NULL
 );
 "@
