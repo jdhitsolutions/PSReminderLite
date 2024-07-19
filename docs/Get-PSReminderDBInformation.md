@@ -32,8 +32,34 @@ PS C:\> Get-PSReminderDBInformation
 
 Age         Reminders Expired Archived
 ---         --------- ------- --------
-00.00:11:24        25       4        1
+00.01:47:55        25       3        2
 ```
+
+### Example 2
+
+```powershell
+PS C:\> Get-PSReminderDBInformation | Select-Object *
+
+Name          : PSReminder.db
+Path          : C:\Users\Jeff\PSReminder.db
+PageSize      : 4096
+PageCount     : 5
+Reminders     : 25
+Expired       : 3
+Archived      : 2
+Size          : 20480
+Created       : 7/18/2024 9:31:22 AM
+Modified      : 7/19/2024 11:09:39 AM
+Author        : THINKX1-JH\Jeff
+Comment       : PSReminderLite database
+Encoding      : UTF-8
+SQLiteVersion : 3.42.0
+Age           : 01:49:09.5592668
+Date          : 7/19/2024 12:58:48 PM
+Computername  : THINKX1-JH
+```
+
+The information object has additional properties not seen in the default display.
 
 ## PARAMETERS
 

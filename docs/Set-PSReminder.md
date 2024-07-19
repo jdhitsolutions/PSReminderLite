@@ -49,38 +49,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DatabasePath
-
-The path to the SQLite database.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: $PSReminderDB
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Date
 
 The new date for the event.
@@ -129,12 +97,11 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -PassThru
-
-Write the updated event to the pipeline.
+### -Tags
+Specify an optional array of tags
 
 ```yaml
-Type: SwitchParameter
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -145,11 +112,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Tags
-Specify an optional array of tags
+### -DatabasePath
+
+The path to the SQLite database.
 
 ```yaml
-Type: String[]
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $PSReminderDB
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+
+Write the updated event to the pipeline.
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -169,6 +153,21 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+### -Confirm
+
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named

@@ -16,6 +16,9 @@ Function Get-PSReminderDBInformation {
         Throw $_
     }
 
+    #get information from the metadata table
+    $meta = invoke-MySQLiteQuery -Path $PSReminderDB -Query "select Author,comment from metadata"
+
     #create a composite custom object
     [PSCustomObject]@{
         PSTypename    = 'PSReminderDBInfo'
@@ -29,6 +32,8 @@ Function Get-PSReminderDBInformation {
         Size          = $r.Size
         Created       = $r.Created
         Modified      = $r.Modified
+        Author        = $meta.Author
+        Comment       = $meta.Comment
         Encoding      = $r.Encoding
         SQLiteVersion = $r.SQLiteVersion
         Age           = (New-TimeSpan -Start $r.Modified -End (Get-Date))

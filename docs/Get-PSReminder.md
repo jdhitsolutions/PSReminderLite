@@ -141,22 +141,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DatabasePath
-
-The path to the SQLite database
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: $PSReminderDB
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -EventName
 
 The name of an event to search for.
@@ -234,6 +218,22 @@ Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: True
+```
+
+### -DatabasePath
+
+The path to the SQLite database
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $PSReminderDB
+Accept pipeline input: False
+Accept wildcard characters: False
 ```
 
 ### CommonParameters

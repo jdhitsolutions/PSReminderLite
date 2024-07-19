@@ -14,8 +14,7 @@ Delete a PSReminder from the database.
 ## SYNTAX
 
 ```yaml
-Remove-PSReminder [-ID] <Int32> [-DatabasePath <String>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-PSReminder [-ID] <Int32> [-DatabasePath <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,19 +33,19 @@ Delete an event from the database by ID number. This will NOT archive it but per
 
 ## PARAMETERS
 
-### -Confirm
+### -ID
 
-Prompts you for confirmation before running the cmdlet.
+The ID number of the event you want to delete.
 
 ```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: (All)
-Aliases: cf
+Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -66,22 +65,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ID
-
-The ID number of the event you want to delete.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -WhatIf
 
 Shows what would happen if the cmdlet runs.
@@ -91,6 +74,22 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named

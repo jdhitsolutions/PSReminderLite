@@ -14,8 +14,7 @@ Archive an expired PSReminder.
 ## SYNTAX
 
 ```yaml
-Move-PSReminder [-Id] <Int32> [-DatabasePath <String>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Move-PSReminder [-Id] <Int32> [-DatabasePath <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,21 +37,22 @@ Archive all expired events.
 
 ## PARAMETERS
 
-### -Confirm
+### -Id
 
-Prompts you for confirmation before running the cmdlet.
+Specify an event ID to archive.
 
 ```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: (All)
-Aliases: cf
+Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
+
 
 ### -DatabasePath
 
@@ -70,22 +70,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Id
-
-Specify an event Id to archive.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName, ByValue)
-Accept wildcard characters: False
-```
-
 ### -WhatIf
 
 Shows what would happen if the cmdlet runs.
@@ -95,6 +79,22 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named

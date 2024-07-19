@@ -36,6 +36,8 @@ The module requires a 64-bit PowerShell 7 platform.
 
 ## Module Preferences
 
+### Tags
+
 ### Exporting Preferences
 
 ## Adding a Reminder
