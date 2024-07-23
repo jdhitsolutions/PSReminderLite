@@ -6,7 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [0.4.0] - 2024-07-19
+## [0.5.0] - 2024-07-23
+
+### Added
+
+- Added an `about` help topic.
+- Added function `Import-FromTickleDatabase` to import Tickle items.
+
+### Changed
+
+- Changed the PSReminder object's `Countdown` property from a defined class property to a type extension.
+- Updated default table view to use tag highlighting for all columns.
+- Modified default formatted view of reminders to auto-size.
+- Updated `README.md`
+
+### Fixed
+
+- "Fixed bugs in `Import-PSReminderDatabase`to account for tags.
+
+## 0.4.0 - 2024-07-19
 
 ### Added
 
@@ -15,13 +33,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added tag formatting for Archived events to the formatting ps1xml file.
 - Added command `Get-PSReminderTag`.
 - Added `Priority` to the default tag list.
+- Added Tags auto-completer to `Get-PSReminder`
 - Added tag support for Archived events
 
 ### Changed
 
 - Updated `Initialize-PSReminderDatabase` to add the `Tags` column to the database tables.
 
-## [0.3.0] - 2024-07-19
+## 0.3.0 - 2024-07-19
 
 ### Changed
 
@@ -31,7 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fixed parameter layout in help.
 
-## [0.2.0] - 2024-07-19
+## 0.2.0 - 2024-07-19
 
 ### Added
 
@@ -44,13 +63,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Updated `Import-PSReminderDatabase` to import from the exported JSON file.
 - Updated `README`.
 
-## [0.0.1] - 2024-07-18
+## 0.0.1 - 2024-07-18
 
 ## Added
 
 - Initial files and module structure.
 
 [Unreleased]: ENTER-URL-HERE
-[0.4.0]: ENTER-URL-HERE
-[0.3.0]: ENTER-URL-HERE
-[0.2.0]: ENTER-URL-HERE
+[0.5.0]: ENTER-URL-HERE

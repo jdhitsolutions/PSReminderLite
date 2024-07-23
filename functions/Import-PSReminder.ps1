@@ -32,19 +32,32 @@ Function Import-PSReminderDatabase {
     } #begin
 
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Importing database data from $Path "
+        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Importing database data from $Path"
         Try {
             #Create the new database
             Initialize-PSReminderDatabase -DatabasePath $DatabasePath -Comment $Comment
+            Start-Sleep -Seconds 2
             #import event data
             $Import = Get-Content -Path $Path | ConvertFrom-Json
             $Import.EventData | ForEach-Object {
-                $InvokeParams.Query = "INSERT INTO $PSReminderTable (EventID,EventDate,EventName,EventComment) VALUES ('$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)')"
+                if ($_.Tags -match "\w+") {
+                    $TagString = $_.Tags -join ','
+                }
+                Else {
+                    $TagString = ''
+                }
+                $InvokeParams.Query = "INSERT INTO $PSReminderTable (EventID,EventDate,EventName,EventComment,Tags) VALUES ('$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)','$($TagString)')"
                 Invoke-MySQLiteQuery @InvokeParams
             }
             #import the archive data
             $Import.ArchivedEvent | ForEach-Object {
-                $InvokeParams.Query = "INSERT INTO $PSReminderArchiveTable (ArchivedEventID,EventID,EventDate,EventName,EventComment,ArchivedDate) VALUES ('$($_.ArchivedEventID)','$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)','$($_.ArchivedDate)')"
+                if ($_.Tags -match "\w+") {
+                    $TagString = $_.Tags -join ','
+                }
+                Else {
+                    $TagString = ''
+                }
+                $InvokeParams.Query = "INSERT INTO $PSReminderArchiveTable (ArchivedEventID,EventID,EventDate,EventName,EventComment,Tags,ArchivedDate) VALUES ('$($_.ArchivedEventID)','$($_.EventID)','$($_.EventDate)','$($_.EventName)','$($_.EventComment)','($TagString)','$($_.ArchivedDate)')"
                 Invoke-MySQLiteQuery @InvokeParams
             }
         } #Try

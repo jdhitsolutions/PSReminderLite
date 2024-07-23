@@ -7,6 +7,7 @@
         <TypeName>PSReminder</TypeName>
       </ViewSelectedBy>
       <TableControl>
+      <AutoSize />
         <TableHeaders>
           <TableColumnHeader>
             <Label>ID</Label>
@@ -74,11 +75,24 @@
               <TableColumnItem>
                 <ScriptBlock>
                 If ($host.name -match "console|code") {
-                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1 )) {
+                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
                       "$([char]27)[91m$($_.Comment)$([char]27)[0m"
                   }
                   elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
                         "$([char]27)[93m$($_.Comment)$([char]27)[0m"
+                  }
+                  elseif ($_.Expired) {
+                    "$([char]27)[9;38;5;163m$($_.Comment)$([char]27)[0m"
+                  }
+                  elseif (Test-Path Variable:PSReminderTag) {
+                    $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
+                    Select-Object -First 1
+                    if ($Tagged) {
+                      "$($PSReminderTag[$Tagged])$($_.Comment)$([char]27)[0m"
+                    }
+                    else {
+                      $_.Comment
+                    }
                   }
                   else {
                     $_.Comment
@@ -98,6 +112,19 @@
                   elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
                         "$([char]27)[93m$($_.Date)$([char]27)[0m"
                   }
+                  elseif ($_.Expired) {
+                    "$([char]27)[9;38;5;163m$($_.Date)$([char]27)[0m"
+                  }
+                  elseif (Test-Path Variable:PSReminderTag) {
+                    $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
+                    Select-Object -First 1
+                    if ($Tagged) {
+                      "$($PSReminderTag[$Tagged])$($_.Date)$([char]27)[0m"
+                    }
+                    else {
+                      $_.Date
+                    }
+                  }
                   else {
                     $_.Date
                   }
@@ -108,7 +135,7 @@
                 </ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
-                <Scriptblock>
+                <ScriptBlock>
                 $count= $_.countdown.toString()
                   if ($count.lastIndexOf('.') -gt 0) {
                     $value = $count.substring(0,$count.lastIndexOf('.'))
@@ -116,22 +143,34 @@
                   else {
                     $value = $count
                   }
-                  If ($host.name -match "console|code") {
+                If ($host.name -match "console|code") {
                   if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
                       "$([char]27)[91m$($value)$([char]27)[0m"
                   }
                   elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
                         "$([char]27)[93m$($value)$([char]27)[0m"
                   }
-                  else {
-                    $value
+                  elseif ($_.Expired) {
+                    "$([char]27)[9;38;5;163m$($value)$([char]27)[0m"
+                  }
+                  elseif (Test-Path Variable:PSReminderTag) {
+                    $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
+                    Select-Object -First 1
+                    if ($Tagged) {
+                      "$($PSReminderTag[$Tagged])$($value)$([char]27)[0m"
+                    }
+                    else {
+                      $value
                     }
                   }
                   else {
-                  $value
+                    $value
                   }
-
-                </Scriptblock>
+                }
+                else {
+                  $value
+                }
+                </ScriptBlock>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>

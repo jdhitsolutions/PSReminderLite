@@ -3,7 +3,7 @@
 #
 @{
     RootModule           = 'PSReminderLite.psm1'
-    ModuleVersion        = '0.4.0'
+    ModuleVersion        = '0.5.0'
     CompatiblePSEditions = 'Core'
     GUID                 = 'f28fb1d9-ea07-4c22-a160-570fb3c092d8'
     Author               = 'Jeff Hicks'
@@ -17,23 +17,21 @@
     FunctionsToExport    = @('Export-PSReminderPreference', 'Initialize-PSReminderDatabase',
         'Add-PSReminder', 'Get-PSReminder', 'Get-PSReminderDBInformation', 'Set-PSReminder',
         'Remove-PSReminder','Export-PSReminderDatabase','Import-PSReminderDatabase',
-        'Move-PSReminder','Get-AboutPSReminder','Get-PSReminderTag')
+        'Move-PSReminder','Get-AboutPSReminder','Get-PSReminderTag','Import-FromTickleDatabase')
     CmdletsToExport      = @()
     VariablesToExport    = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
         'PSReminderArchiveTable','PSReminderTag')
     AliasesToExport      = @('apsr', 'gpsr', 'spsr', 'rpsr','Archive-PSReminder')
     PrivateData          = @{
         PSData = @{
-            # Tags = @()
+            Tags = @("psreminder","reminder","sqlite","schedule")
             # LicenseUri = ''
             # ProjectUri = ''
             # IconUri = ''
             # ReleaseNotes = ''
             # Prerelease = ''
-            # RequireLicenseAcceptance = $false
-            # ExternalModuleDependencies = @()
+            RequireLicenseAcceptance = $false
+            ExternalModuleDependencies = @('MySQLite')
         } # End of PSData hashtable
     } # End of PrivateData hashtable
-    # HelpInfoURI = ''
-    # DefaultCommandPrefix = ''
 }

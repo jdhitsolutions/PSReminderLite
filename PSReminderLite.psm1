@@ -63,7 +63,6 @@ Class PSReminder {
     [int32]$ID
     [string[]]$Tags
     [boolean]$Expired = $False
-    hidden [TimeSpan]$Countdown
 
     #constructor
     PSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment, [String[]]$Tags) {
@@ -75,11 +74,6 @@ Class PSReminder {
         if ($Date -lt (Get-Date)) {
             $this.Expired = $True
         }
-        $ts = $this.Date - (Get-Date)
-        if ($ts.TotalMinutes -lt 0) {
-            $ts = New-TimeSpan -Minutes 0
-        }
-        $this.Countdown = $ts
     }
 } #close PSReminder class
 
@@ -103,7 +97,13 @@ Class ArchivePSReminder {
 
 Update-TypeData -TypeName PSReminder -DefaultDisplayPropertySet ID, Date, Event, Comment -Force
 Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name -Value Event -Force
-
+Update-TypeData -Typename PSReminder -MemberType ScriptProperty -MemberName Countdown -value {
+    $ts = $this.Date - (Get-Date)
+    if ($ts.TotalMinutes -lt 0) {
+        $ts = New-TimeSpan -Minutes 0
+    }
+    $ts
+} -force
 #endregion
 
 #region auto completers
@@ -111,12 +111,14 @@ Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name 
 Register-ArgumentCompleter -CommandName Add-PSReminder,Set-PSReminder -ParameterName Tags -ScriptBlock {
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
 
-    Get-PSReminderTag | Where-Object { $_.tag -like "$WordToComplete*"} |
-    ForEach-Object {
-        [System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag)
-    }
+    (Get-PSReminderTag).Where({ $_.Tag -like "$WordToComplete*"}).ForEach({[System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag)})
 }
 
+Register-ArgumentCompleter -CommandName Get-PSReminder -ParameterName Tag -ScriptBlock {
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+
+    (Get-PSReminderTag).Where({ $_.Tag -like "$WordToComplete*"}).ForEach({[System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag)})
+}
 
 #endregion
 
@@ -126,7 +128,7 @@ $export = @{
     Function = @('Export-PSReminderPreference', 'Initialize-PSReminderDatabase',
         'Add-PSReminder', 'Get-PSReminder', 'Get-PSReminderDBInformation', 'Set-PSReminder',
         'Remove-PSReminder', 'Export-PSReminderDatabase', 'Import-PSReminderDatabase',
-        'Move-PSReminder', 'Get-AboutPSReminder','Get-PSReminderTag')
+        'Move-PSReminder', 'Get-AboutPSReminder','Get-PSReminderTag','Import-FromTickleDatabase')
     Alias    = @('apsr', 'gpsr', 'spsr', 'rpsr', 'Archive-PSReminder')
 }
 Export-ModuleMember @export
