@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.0.0] - 2024-08-13
+## 1.0.0 - 2024-08-13
 
 ### Added
 
@@ -94,4 +94,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial files and module structure.
 
 [Unreleased]: https://github.com/jdhitsolutions/PSReminderLite/compare/v1.0.0..HEAD
-[1.0.0]: https://github.com/jdhitsolutions/PSReminderLite/compare/v0.5.0..v1.0.0
+
