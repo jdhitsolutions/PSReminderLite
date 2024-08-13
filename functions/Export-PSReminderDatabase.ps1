@@ -1,4 +1,3 @@
-#TODO Export Archive Table
 Function Export-PSReminderDatabase {
     [CmdletBinding(SupportsShouldProcess)]
     [OutputType('None')]
@@ -18,14 +17,17 @@ Function Export-PSReminderDatabase {
         [string]$DatabasePath = $PSReminderDB
     )
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
     } #begin
 
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Exporting database $DatabasePath to $Path "
-        if ($PSCmdlet.ShouldProcess($Path,"Exporting database $DatabasePath")) {
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $($strings.ExportDB -f $DatabasePath, $Path)
+        if ($PSCmdlet.ShouldProcess($Path, "Exporting database $DatabasePath")) {
             Try {
                 Export-MySQLiteDB -Destination $Path -Path $DatabasePath -ErrorAction Stop
             }
@@ -33,11 +35,12 @@ Function Export-PSReminderDatabase {
                 throw $_
             }
         } #should process
-
     } #process
 
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 
 }

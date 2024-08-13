@@ -135,6 +135,9 @@ Get-PSReminder [-Expired] [-DatabasePath <string>] [<CommonParameters>]
 Get-PSReminder [-Archived] [-DatabasePath <string>] [<CommonParameters>]
 
 Get-PSReminder [-Tag <string>] [-DatabasePath <string>] [<CommonParameters>]
+
+Get-PSReminder [-Year <int>] [-Month <int>] [-DatabasePath <string>] [<CommonParameters>]
+
 ```
 
 The default is to display reminders for the next X number day as defined by the `$PSReminderDefaultDays` variable.
@@ -154,7 +157,7 @@ ID   Event       Comment Date                  Countdown
 
 ## Archiving Reminders
 
-The `PSReminder` object is based on a PowerShell class definition, which has extended properties.
+The `PSReminder` and `ArchivePSReminder` objects are based on PowerShell class definitions, which have extended as well as hidden properties.
 
 ```powershell
 Class PSReminder {
@@ -164,6 +167,10 @@ Class PSReminder {
     [int32]$ID
     [string[]]$Tags
     [boolean]$Expired = $False
+    #add a hidden property that captures the database path
+    hidden [string]$Source
+    #add a hidden property to capture the computer name'
+    hidden [string]$ComputerName = [System.Environment]::MachineName
 
     #constructor
     PSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment, [String[]]$Tags) {
@@ -177,6 +184,28 @@ Class PSReminder {
         }
     }
 } #close PSReminder class
+
+Class ArchivePSReminder {
+    [String]$Event
+    [DateTime]$Date
+    [String]$Comment
+    [int32]$ID
+    [string[]]$Tags
+    [DateTime]$ArchivedDate
+    #add a hidden property that captures the database path
+    hidden [string]$Source
+    #add a hidden property to capture the computer name'
+    hidden [string]$ComputerName = [System.Environment]::MachineName
+
+    ArchivePSReminder([int32]$ID,[String]$Event,[DateTime]$Date,[String]$Comment,[String[]]$Tags, [DateTime]$ArchivedDate) {
+        $this.ID = $ID
+        $this.Event = $Event
+        $this.Date = $Date
+        $this.Comment = $Comment
+        $this.ArchivedDate = $ArchivedDate
+        $this.Tags = $Tags
+    }
+} #close ArchivePSReminder class
 
 Update-TypeData -TypeName PSReminder -DefaultDisplayPropertySet ID, Date, Event, Comment -Force
 Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name -Value Event -Force
@@ -244,7 +273,7 @@ ID     Event                     Comment        Date
 1112   Alpha Meeting                            8/1/2024 8:00:00 AM
 1108   PSTweetChat               online         8/2/2024 1:00:00 PM
 1075   Cmdlet Working Group                     8/7/2024 12:00:00 PM
-076   Cmdlet Working Group                     8/21/2024 12:00:00 PM
+076    Cmdlet Working Group                     8/21/2024 12:00:00 PM
 
    Month: Sep 2024
 
@@ -288,10 +317,12 @@ Author        : THINKX1-JH\Jeff
 Comment       : Imported from a Tickle database
 Encoding      : UTF-8
 SQLiteVersion : 3.42.0
-Age           : 01:43:24.7868521
 Date          : 7/22/2024 4:33:27 PM
 Computername  : THINKX1-JH
+Age           : 01:43:24.7868521
 ```
+
+> The `Age` property is a script property.
 
 Since the SQLite database is stored as a single file, there are limited management tasks compared to a full SQL Server instance. You can backup the database file with your standard file backup process.
 

@@ -28,7 +28,14 @@ Function Get-PSReminder {
         [Parameter(ParameterSetName = 'Days')]
         [Alias('days')]
         [Int]$Next = $PSReminderDefaultDays,
-        [Parameter(HelpMessage ="Select reminders by a tag",ParameterSetName = 'Tag')]
+        [Parameter(ParameterSetName = 'Month',HelpMessage = 'Select the year for unexpired reminders by month. The default is the current year.')]
+        [int]$Year = (Get-Date).Year,
+        [Parameter(ParameterSetName = 'Month',HelpMessage = 'Select unexpired reminders by month')]
+        [ValidateNotNullOrEmpty()]
+        [ValidateRange(1, 12)]
+        [ValidateSet(1,2,3,4,5,6,7,8,9,10,11,12)]
+        [int]$Month,
+        [Parameter(HelpMessage = 'Select reminders by a tag', ParameterSetName = 'Tag')]
         [SupportsWildcards()]
         [ValidateNotNullOrEmpty()]
         [String]$Tag,
@@ -39,8 +46,11 @@ Function Get-PSReminder {
     )
 
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $InvokeParams = @{
             Query       = $null
@@ -50,14 +60,15 @@ Function Get-PSReminder {
 
     } #begin
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Using parameter set $($PSCmdlet.ParameterSetName)"
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $($strings.ParameterSet -f $($PSCmdlet.ParameterSetName))
         Switch ($PSCmdlet.ParameterSetName) {
             'ID' {
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by ID"
+                _verbose $($strings.ByID -f $ID)
                 $filter = "Select * from $PSReminderTable where EventID='$ID'"
             }
             'Name' {
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by Name"
+                _verbose $($strings.ByName -f $EventName)
                 #get events that haven't expired or been archived by name
                 if ($EventName -match '\*') {
                     $EventName = $EventName.replace('*', '%')
@@ -72,62 +83,76 @@ Function Get-PSReminder {
                     AND EventDate > '2024-07-17 15:07:42'
                     ORDER BY EventDate ASC;
                 #>
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] for the next $next days"
+                _verbose $($strings.ByDays -f $Next)
                 $target = (Get-Date).Date.AddDays($next).ToString('yyyy-MM-dd HH:mm:ss')
                 #(Get-Date).Date.AddDays($next).ToString()
                 $filter = "Select * from $PSReminderTable where EventDate<='$target' AND EventDate > '$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))' ORDER by EventDate Asc"
             }
             'Expired' {
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by Expiration"
+                _verbose $($strings.ByExpiration)
                 #get expired events that have not been archived
                 $filter = "Select * from $PSReminderTable where EventDate<'$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))' ORDER by EventDate Asc"
             }
             'Archived' {
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by Archive"
-                $filter = "Select * from $PSReminderArchiveTable  ORDER by EventDate Asc"
+                _verbose $($strings.ByArchive -f $PSReminderArchiveTable)
+                $filter = "Select * from $PSReminderArchiveTable ORDER by EventDate Asc"
+            }
+            'Month' {
+                _verbose $($strings.ByMonth -f $Month,$Year)
+                $target = (Get-Date -Year $Year -Month $Month -Day 1).ToString('yyyy-MM-dd HH:mm:ss')
+                if ($month -eq 12) {
+                    $targetEnd = (Get-Date -Year ($Year+1) -Month 1 -Day 1).ToString('yyyy-MM-dd HH:mm:ss')
+                }
+                else {
+                    $targetEnd = $((Get-Date -Year $Year -Month ($Month+1) -Day 1).ToString('yyyy-MM-dd HH:mm:ss'))
+                }
+                $today = (Get-Date).ToString('yyyy-MM-dd HH:mm:ss')
+                $filter = "Select * from $PSReminderTable where EventDate >='$Today' AND EventDate>='$target' AND EventDate<'$targetEnd' ORDER by EventDate Asc"
             }
             'All' {
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] All"
+                _verbose $($strings.ByAll)
                 #get all non archived events
                 $filter = "Select * from $PSReminderTable ORDER by EventDate Asc"
             }
             'Tag' {
-                $Tag = $Tag -replace '\*','%'
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] by tag $Tag"
+                $Tag = $Tag -replace '\*', '%'
+                _verbose $($strings.ByTag -f $Tag)
                 $filter = "Select * from $PSReminderTable where Tags LIKE '%$Tag' ORDER by EventDate Asc"
             }
             Default {
                 #this should never get called
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Default"
+                _verbose $($strings.Default)
                 #get events that haven't been archived
                 $filter = "Select * from $PSReminderTable where EventDate>='$(Get-Date)' ORDER by EventDate Asc"
             }
         } #switch
 
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Importing events from $DatabasePath"
+        _verbose $($strings.ImportFrom -f $DatabasePath)
         #Query database for matching events
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $filter"
+        _verbose $filter
         $InvokeParams.query = $filter
 
         Try {
             $events = Invoke-MySQLiteQuery @InvokeParams
             #convert the data into PSReminder objects
             if ($Archived) {
-                $data = $events | _NewArchivePSReminder
+                $data = $events | _NewArchivePSReminder -Source $DatabasePath
             }
             else {
-                $data = $events | _NewPSReminder
+                $data = $events | _NewPSReminder -Source $DatabasePath
             }
         }
         Catch {
             Throw $_
         }
 
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Found $($events.count) matching events"
+        _verbose $($strings.Found -f $($data.Count))
         #write event data to the pipeline
         $data
     } #process
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 }

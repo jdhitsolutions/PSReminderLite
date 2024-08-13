@@ -5,13 +5,15 @@ Function Get-AboutPSReminder {
     Param( )
 
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
-
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose ($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose ($strings.PSVersion -f $($PSVersionTable.PSVersion))
     } #begin
 
     Process {
-
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $strings.GetVer
         [PSCustomObject]@{
             PSTypeName    = 'AboutPSReminder'
             ModuleName    = 'PSReminderLite'
@@ -22,12 +24,12 @@ Function Get-AboutPSReminder {
             Platform      = $PSVersionTable.Platform
             Host          = $Host.Name
         }
-
     } #process
 
     End {
-
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose ($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 
 } #close Get-AboutPSReminder

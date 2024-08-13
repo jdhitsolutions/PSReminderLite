@@ -19,7 +19,9 @@ Get-PSReminderTag [<CommonParameters>]
 
 ## DESCRIPTION
 
-This command makes it easier to view the $PSReminderTag variable. The output of the command will show the ANSI escape sequence formatted with the sequence. The output will show NULL styles for tags defined in the database but not in the variable.
+This command makes it easier to view the $PSReminderTag variable. The output of the command will show the ANSI escape sequence formatted with the sequence. The output will show NULL styles for tags defined in the database as part of saved event reminders, but not in the $PSReminderTag variable.
+
+There are no commands to add or remove tags. The $PSReminderTag variable is a hashtable that you can modify using PowerShell. If you want to make the changes persistent, use Export-PSreminderPreference to save the changes.
 
 ## EXAMPLES
 
@@ -38,7 +40,7 @@ Work     `e[38;5;156m
 travel
 ```
 
-The style will be formatted with the corresponding style.
+The style will be formatted with the corresponding style. In this example, the travel tag was found in the database as part of one or more event reminders, but not in the $PSReminderTag variable.
 
 ## PARAMETERS
 
@@ -56,4 +58,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
+This command has an alias of gprt.
+
 ## RELATED LINKS
+
+[Get-PSReminderPreference](Get-PSReminderPreference.md)
+
+[Export-PSReminderPreference](Export-PSReminderPreference.md)

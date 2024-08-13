@@ -18,8 +18,10 @@ Function Move-PSReminder {
     )
 
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $InvokeParams = @{
             ErrorAction = 'Stop'
@@ -30,6 +32,7 @@ Function Move-PSReminder {
     } #begin
 
     Process {
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
         <#
         columnIndex ColumnName      ColumnType
         ----------- ----------      ----------
@@ -41,32 +44,32 @@ Function Move-PSReminder {
         5           Tags            TEXT
         6           ArchivedDate    TEXT
         #>
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Processing EventID $ID"
+        _verbose $($strings.Processing -f $ID)
         #always try to get the event
         $r = Invoke-MySQLiteQuery "Select * from $PSReminderTable where EventID='$ID'" -Path $PSReminderDB -WhatIf:$False
-        $evt = "[{0}] {1}" -f $r.EventID, $r.EventName
+        $evt = '[{0}] {1}' -f $r.EventID, $r.EventName
         $ArchiveDate = (Get-Date).ToString('yyyy-MM-dd HH:mm:ss')
-        if ($r -AND $PScmdlet.ShouldProcess($evt,"Archiving Event")) {
+        if ($r -AND $PScmdlet.ShouldProcess($evt, 'Archiving Event')) {
             #Move the event to the ArchivedEvent table
             Try {
-                $InvokeParams.query ="Insert into $PSReminderArchiveTable (EventID, EventName, EventDate, EventComment,Tags,ArchivedDate) values ('$($r.EventID)', '$($r.EventName)', '$($r.EventDate)', '$($r.EventComment)','$($r.tags)','$ArchiveDate')"
-                #Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $($InvokeParams.query)"
+                $InvokeParams.query = "Insert into $PSReminderArchiveTable (EventID, EventName, EventDate, EventComment,Tags,ArchivedDate) values ('$($r.EventID)', '$($r.EventName)', '$($r.EventDate)', '$($r.EventComment)','$($r.tags)','$ArchiveDate')"
+                _verbose $($InvokeParams.query)
                 Invoke-MySQLiteQuery @InvokeParams
                 #delete the event from the EventData table
                 $InvokeParams.Query = "Delete from $PSReminderTable where EventID='$ID'"
-                # Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $($InvokeParams.query)"
+                _verbose $($InvokeParams.query)
                 Invoke-MySQLiteQuery @InvokeParams
             }
             Catch {
                 Throw $_
             }
         }
-
     } #process
 
     End {
-
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 
 } #close Move-PSReminder

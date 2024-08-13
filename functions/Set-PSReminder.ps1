@@ -28,8 +28,10 @@ Function Set-PSReminder {
 
     )
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $update = @'
 UPDATE EventData
@@ -45,7 +47,8 @@ SET {0} Where EventID='{1}'
     } #begin
 
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Updating Event ID $ID "
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $($strings.Processing -f $ID)
         $cols = @()
         if ($EventName) {
             $cols += "EventName='$EventName'"
@@ -75,6 +78,7 @@ SET {0} Where EventID='{1}'
     } #process
 
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 }

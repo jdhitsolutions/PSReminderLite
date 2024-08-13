@@ -133,6 +133,7 @@ Getting Reminders
     Get-PSReminder [-Expired] [-DatabasePath <string>] [<CommonParameters>]
     Get-PSReminder [-Archived] [-DatabasePath <string>] [<CommonParameters>]
     Get-PSReminder [-Tag <string>] [-DatabasePath <string>] [<CommonParameters>]
+    Get-PSReminder [-Year <int>] [-Month <int>] [-DatabasePath <string>] [<CommonParameters>]
 
     The default is to display reminders for the next X number day as defined by
     the $PSReminderDefaultDays variable.
@@ -150,8 +151,8 @@ Modifying a Reminder
     1108 PSTweetChat online  08/02/2024 13:00:00 10.22:38:44
 
 Archiving Reminders
-    The PSReminder object is based on a PowerShell class definition, which has
-    extended properties.
+    The PSReminder and ArchiveReminder objects are based on PowerShell class definitions,
+    which have extended and hidden properties.
 
     Class PSReminder {
         [String]$Event
@@ -160,6 +161,10 @@ Archiving Reminders
         [int32]$ID
         [string[]]$Tags
         [boolean]$Expired = $False
+        #add a hidden property that captures the database path
+        hidden [string]$Source
+        #add a hidden property to capture the computer name'
+        hidden [string]$ComputerName = [System.Environment]::MachineName
 
         #constructor
         PSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment, [String[]]$Tags) {
@@ -173,6 +178,28 @@ Archiving Reminders
             }
         }
     } #close PSReminder class
+
+    Class ArchivePSReminder {
+    [String]$Event
+    [DateTime]$Date
+    [String]$Comment
+    [int32]$ID
+    [string[]]$Tags
+    [DateTime]$ArchivedDate
+    #add a hidden property that captures the database path
+    hidden [string]$Source
+    #add a hidden property to capture the computer name'
+    hidden [string]$ComputerName = [System.Environment]::MachineName
+
+    ArchivePSReminder([int32]$ID,[String]$Event,[DateTime]$Date,[String]$Comment,[String[]]$Tags, [DateTime]$ArchivedDate) {
+        $this.ID = $ID
+        $this.Event = $Event
+        $this.Date = $Date
+        $this.Comment = $Comment
+        $this.ArchivedDate = $ArchivedDate
+        $this.Tags = $Tags
+    }
+} #close ArchivePSReminder class
 
     Update-TypeData -TypeName PSReminder -DefaultDisplayPropertySet ID, Date, Event, Comment -Force
     Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name -Value Event -Force
@@ -249,7 +276,7 @@ Display Formatting
     This view does not use tag highlighting.
 
 Database Management
-    You can use Get-PSReminderDBInformation command to get a summary of the
+    You can use the Get-PSReminderDBInformation command to get a summary of the
     database tables and the number of records in each table.
 
     PS C:\> Get-PSReminderDBInformation
@@ -278,9 +305,11 @@ Database Management
     Comment       : Imported from a Tickle database
     Encoding      : UTF-8
     SQLiteVersion : 3.42.0
-    Age           : 01:43:24.7868521
     Date          : 7/22/2024 4:33:27 PM
     Computername  : THINKX1-JH
+    Age           : 01:43:24.7868521
+
+    The `Age` property is a script property.
 
     Since the SQLite database is stored as a single file, there are limited
     management tasks compared to a full SQL Server instance. You can backup the

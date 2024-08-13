@@ -1,7 +1,7 @@
 Function Add-PSReminder {
     [CmdletBinding(SupportsShouldProcess)]
     [OutputType('None', 'PSReminder')]
-    [Alias('apsr')]
+    [Alias('apsr','New-PSReminder')]
 
     Param(
         [Parameter(
@@ -19,14 +19,14 @@ Function Add-PSReminder {
             HelpMessage = 'Enter the date and time for the event'
         )]
         [ValidateScript( {
-            If ($_ -gt (Get-Date)) {
-                $True
-            }
-            else {
-                Throw 'You must enter a future date and time.'
-            }
-        })]
-        [Alias("EventDate")]
+                If ($_ -gt (Get-Date)) {
+                    $True
+                }
+                else {
+                    Throw 'You must enter a future date and time.'
+                }
+            })]
+        [Alias('EventDate')]
         [DateTime]$Date,
         [Parameter(
             Position = 2,
@@ -49,8 +49,10 @@ Function Add-PSReminder {
         [Switch]$PassThru
     )
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $InvokeParams = @{
             Query       = $null
@@ -61,19 +63,20 @@ Function Add-PSReminder {
     } #begin
 
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Adding event '$EventName'"
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $($strings.Adding -f $EventName)
         #events with apostrophes will have them stripped off
         $theEvent = $EventName.replace("'", '')
 
         #The date must for formatted as yyyy-MM-dd HH:mm:ss
         $ISODate = $Date.ToString('yyyy-MM-dd HH:mm:ss')
-        [string]$TagString = $Tags -join ","
+        [string]$TagString = $Tags -join ','
         $InvokeParams.query = "INSERT INTO EventData (EventDate,EventName,EventComment,Tags) VALUES ('$ISODate','$theEvent','$Comment','$TagString')"
 
         $short = "[$ISODate] $Event"
         if ($PSCmdlet.ShouldProcess($short)) {
             Try {
-                Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] $($InvokeParams.query)"
+                _verbose $($InvokeParams.query)
                 Invoke-MySQLiteQuery @InvokeParams
             } #try
             Catch {
@@ -89,6 +92,8 @@ Function Add-PSReminder {
     } #process
 
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 }

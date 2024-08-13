@@ -16,7 +16,7 @@ Get one or more PSReminder entries.
 ### Days (Default)
 
 ```yaml
-Get-PSReminder [-Next <Int32>] [-DatabasePath <String>]  [<CommonParameters>]
+Get-PSReminder [-Next <Int32>] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
 ### ID
@@ -43,16 +43,22 @@ Get-PSReminder [-All] [-DatabasePath <String>] [<CommonParameters>]
 Get-PSReminder [-Expired] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
-### Tag
-
-```yaml
-Get-PSReminder [-Tag <String>] [-DatabasePath <String>] [<CommonParameters>]
-```
-
 ### Archived
 
 ```yaml
 Get-PSReminder [-Archived] [-DatabasePath <String>] [<CommonParameters>]
+```
+
+### Month
+
+```yaml
+Get-PSReminder [-Month <Int32>] [-Year <Int32>]  [-DatabasePath <String>] [<CommonParameters>]
+```
+
+### Tag
+
+```yaml
+Get-PSReminder [-Tag <String>] [-DatabasePath <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -66,11 +72,12 @@ This command will query the PSReminder database and return matching events. The 
 ```powershell
 PS C:\> Get-PSReminder
 
-ID   Event                               Comment              Date
---   -----                               -------              ----
-19   Migration Planning meeting          prep docs            07/19/2024 02:28:…
-23   Vendor phone call                   include Gladys       07/19/2024 13:30:…
-1    Haircut                                                  7/24/2024 8:30:00…
+
+ID   Event                      Comment                 Date    Countdown
+--   -----                      -------                 ----    ---------
+19   Migration Planning meeting prep docs  8/7/2024 12:00 PM     00:52:30
+21   Vendor phone call                     8/11/2024 7:30 PM   4.08:22:30
+2    Haircut                    Joe        8/13/2024 9:30 AM   5.22:22:30
 ```
 
 The default is to get reminders due in the next number of days defined in $PSReminderDefaultDays. The output will be color code. Events due within 24 hours will be red, and events due within 48 hours will be yellow.
@@ -78,11 +85,11 @@ The default is to get reminders due in the next number of days defined in $PSRem
 ### Example 2
 
 ```powershell
-PS C:\> Get-PSReminder -id 19 | select *
+PS C:\> Get-PSReminder -id 19 | Select-Object *
 
 Name    : Migration Planning meeting
 Event   : Migration Planning meeting
-Date    : 7/19/2024 2:28:06 AM
+Date    : 8/7/2024 12:00:00 PM
 Comment : prep docs
 ID      : 19
 Expired : False
@@ -95,13 +102,13 @@ The object has extended properties defined.
 ```powershell
 PS C:\> Get-PSReminder -All | Format-Table -view date
 
-   Month: Jul 2024
+   Month: Aug 2024
 
-ID     Event                     Comment        Date
---     -----                     -------        ----
-19     Migration Planning meeti… prep docs      7/19/2024 2:28:06 AM
-23     Vendor phone call         include Gladys 7/19/2024 1:30:00 PM
-1      Haircut                                  7/24/2024 8:30:00 AM
+   <events>
+
+   Month: Sep 2024
+
+   <events>
 ...
 ```
 
@@ -204,6 +211,7 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
+
 ### -Tag
 
 Select reminders by a tag. Wildcards are supported.
@@ -218,6 +226,38 @@ Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: True
+```
+
+### -Month
+
+Select unexpired reminders by month.
+
+```yaml
+Type: Int32
+Parameter Sets: Month
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Year
+
+Select the year for unexpired reminders by month. The default is the current year.
+
+```yaml
+Type: Int32
+Parameter Sets: Month
+Aliases:
+
+Required: False
+Position: Named
+Default value: Current year
+Accept pipeline input: False
+Accept wildcard characters: False
 ```
 
 ### -DatabasePath
@@ -251,6 +291,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### PSReminder
 
 ## NOTES
+
+This command has an alias of gpsr.
 
 ## RELATED LINKS
 

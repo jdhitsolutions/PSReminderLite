@@ -1,0 +1,101 @@
+<!--
+Format type data generated 08/11/2024 20:14:13 by PROSPERO\Jeff
+
+This file was created using the New-PSFormatXML command that is part
+of the PSScriptTools module.
+
+https://github.com/jdhitsolutions/PSScriptTools
+-->
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>PSReminderPreference</Name>
+      <ViewSelectedBy>
+        <TypeName>PSReminderPreference</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+              <ScriptBlock>
+                "$($PSStyle.Foreground.BrightYellow)$($PSStyle.Italic)PSReminderPreference Settings$($PSStyle.Reset)"
+              </ScriptBlock>
+              </ExpressionBinding>
+            <NewLine/>
+              <ExpressionBinding>
+                <ScriptBlock>$_ | Format-Table -view variables | Out-String</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    "$($PSStyle.Bold)$($PSStyle.Underline)PSReminderTags$($PSStyle.Reset)"
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine/>
+              <NewLine/>
+              <ExpressionBinding>
+              <ScriptBlock>
+                  "  $($PSStyle.Underline)$($PSStyle.Formatting.TableHeader){0}$($PSStyle.Reset)            $($PSStyle.Underline)$($PSStyle.Formatting.TableHeader){1}$($PSStyle.Reset)`n" -f 'Tag','Style'
+              </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+                    $_.PSReminderTag.GetEnumerator() | Foreach-Object {
+                      "  {0}{1}{2}`e[0m" -f ($_.Key).Padright(15),$_.Value,$($_.value.replace("`e",'`e'))
+                    } | Out-String
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+        <View>
+      <!--Created 08/11/2024 20:14:13 by PROSPERO\Jeff-->
+      <Name>variables</Name>
+      <ViewSelectedBy>
+        <TypeName>PSReminderPreference</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>PSReminderDB</PropertyName>
+        <Label>PSReminderDB</Label>
+      </GroupBy>
+      <TableControl>
+        <!--Delete the AutoSize node if you want to use the defined widths.-->
+        <AutoSize />
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>PSReminderDefaultDays</Label>
+            <Width>24</Width>
+            <Alignment>center</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>PSReminderTable</Label>
+            <Width>18</Width>
+            <Alignment>center</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>PSReminderArchiveTable</Label>
+            <Width>25</Width>
+            <Alignment>center</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>PSReminderDefaultDays</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>PSReminderTable</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>PSReminderArchiveTable</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

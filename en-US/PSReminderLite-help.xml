@@ -246,7 +246,7 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>This command has aliases of apsr and New-PSReminder.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -554,7 +554,12 @@
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-PSReminderPreference</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -822,6 +827,45 @@ Host          : ConsoleHost</dev:code>
           <dev:defaultValue>$PSReminderDB</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-PSReminder</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Month</maml:name>
+          <maml:description>
+            <maml:para>Select unexpired reminders by month.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Year</maml:name>
+          <maml:description>
+            <maml:para>Select the year for unexpired reminders by month. The default is the current year.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Current year</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DatabasePath</maml:name>
+          <maml:description>
+            <maml:para>The path to the SQLite database</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$PSReminderDB</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
     </command:syntax>
     <command:parameters>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
@@ -909,6 +953,30 @@ Host          : ConsoleHost</dev:code>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Month</maml:name>
+        <maml:description>
+          <maml:para>Select unexpired reminders by month.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Year</maml:name>
+        <maml:description>
+          <maml:para>Select the year for unexpired reminders by month. The default is the current year.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Current year</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>DatabasePath</maml:name>
         <maml:description>
           <maml:para>The path to the SQLite database</maml:para>
@@ -951,7 +1019,7 @@ Host          : ConsoleHost</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>This command has an alias of gpsr.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -959,22 +1027,23 @@ Host          : ConsoleHost</dev:code>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminder
 
-ID   Event                               Comment              Date
---   -----                               -------              ----
-19   Migration Planning meeting          prep docs            07/19/2024 02:28:…
-23   Vendor phone call                   include Gladys       07/19/2024 13:30:…
-1    Haircut                                                  7/24/2024 8:30:00…</dev:code>
+
+ID   Event                      Comment                 Date    Countdown
+--   -----                      -------                 ----    ---------
+19   Migration Planning meeting prep docs  8/7/2024 12:00 PM     00:52:30
+21   Vendor phone call                     8/11/2024 7:30 PM   4.08:22:30
+2    Haircut                    Joe        8/13/2024 9:30 AM   5.22:22:30</dev:code>
         <dev:remarks>
           <maml:para>The default is to get reminders due in the next number of days defined in $PSReminderDefaultDays. The output will be color code. Events due within 24 hours will be red, and events due within 48 hours will be yellow.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-PSReminder -id 19 | select *
+        <dev:code>PS C:\&gt; Get-PSReminder -id 19 | Select-Object *
 
 Name    : Migration Planning meeting
 Event   : Migration Planning meeting
-Date    : 7/19/2024 2:28:06 AM
+Date    : 8/7/2024 12:00:00 PM
 Comment : prep docs
 ID      : 19
 Expired : False</dev:code>
@@ -986,13 +1055,13 @@ Expired : False</dev:code>
         <maml:title>-------------------------- Example 3 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminder -All | Format-Table -view date
 
-   Month: Jul 2024
+   Month: Aug 2024
 
-ID     Event                     Comment        Date
---     -----                     -------        ----
-19     Migration Planning meeti… prep docs      7/19/2024 2:28:06 AM
-23     Vendor phone call         include Gladys 7/19/2024 1:30:00 PM
-1      Haircut                                  7/24/2024 8:30:00 AM
+   &lt;events&gt;
+
+   Month: Sep 2024
+
+   &lt;events&gt;
 ...</dev:code>
         <dev:remarks>
           <maml:para>The module includes a custom formatting view.</maml:para>
@@ -1032,7 +1101,7 @@ ID     Event                     Comment        Date
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>DatabasePath</maml:name>
           <maml:description>
-            <maml:para>The path to the SQLite database</maml:para>
+            <maml:para>The path to the SQLite database.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1047,7 +1116,7 @@ ID     Event                     Comment        Date
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>DatabasePath</maml:name>
         <maml:description>
-          <maml:para>The path to the SQLite database</maml:para>
+          <maml:para>The path to the SQLite database.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1087,11 +1156,11 @@ ID     Event                     Comment        Date
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminderDBInformation
 
-   Database: C:\Users\Jeff\PSReminder.db [20KB]
+   Database: C:\Users\Jeff\PSReminder.db [84KB]
 
 Age         Reminders Expired Archived
 ---         --------- ------- --------
-00.01:47:55        25       3        2</dev:code>
+00.20:40:17        25      12      807</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1100,25 +1169,25 @@ Age         Reminders Expired Archived
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminderDBInformation | Select-Object *
 
+Age           : 20:42:20.3258389
 Name          : PSReminder.db
 Path          : C:\Users\Jeff\PSReminder.db
 PageSize      : 4096
-PageCount     : 5
+PageCount     : 21
 Reminders     : 25
-Expired       : 3
-Archived      : 2
-Size          : 20480
-Created       : 7/18/2024 9:31:22 AM
-Modified      : 7/19/2024 11:09:39 AM
+Expired       : 12
+Archived      : 807
+Size          : 86016
+Created       : 7/23/2024 3:59:03 PM
+Modified      : 7/24/2024 1:53:00 PM
 Author        : THINKX1-JH\Jeff
-Comment       : PSReminderLite database
+Comment       : Imported from a Tickle database
 Encoding      : UTF-8
 SQLiteVersion : 3.42.0
-Age           : 01:49:09.5592668
-Date          : 7/19/2024 12:58:48 PM
-Computername  : THINKX1-JH</dev:code>
+Date          : 7/25/2024 10:35:21 AM
+Computername  : PROSPERO</dev:code>
         <dev:remarks>
-          <maml:para>The information object has additional properties not seen in the default display.</maml:para>
+          <maml:para>The information object has additional properties not seen in the default display. The Age property is a script property and will always update. The object also has a RefreshInfo() method you can invoke to refresh a saved object.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -1135,6 +1204,84 @@ Computername  : THINKX1-JH</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Get-PSReminderPreference</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>PSReminderPreference</command:noun>
+      <maml:description>
+        <maml:para>Get all PSReminder preferences</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Preferences for the PSReminderLite module are stored as global variables. Run this command to get a report of all preferences.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-PSReminderPreference</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSReminderPreference</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-PSReminderPreference
+
+PSReminderPreference Settings
+
+   PSReminderDB: C:\Users\Jeff\PSReminder.db
+
+PSReminderDefaultDays PSReminderTable PSReminderArchiveTable
+--------------------- --------------- ----------------------
+         14              EventData        ArchivedEvent
+
+PSReminderTags
+
+  Tag            Style
+  Priority       `e[1;3;38;5;199m
+  Testing        `e[3;92m
+  Personal       `e[94m
+  Work           `e[38;5;156m
+  travel         `e[38;5;141m
+  Event          `e[38;5;87m
+  Holiday        `e[38;5;225m</dev:code>
+        <dev:remarks>
+          <maml:para>The Style output will be formatted with the corresponding ANSI sequence.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Export-PSReminderPreference</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Get-PSReminderTag</command:name>
       <command:verb>Get</command:verb>
       <command:noun>PSReminderTag</command:noun>
@@ -1143,7 +1290,8 @@ Computername  : THINKX1-JH</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This command makes it easier to view the $PSReminderTag variable. The output of the command will show the ANSI escape sequence formatted with the sequence. The output will show NULL styles for tags defined in the database but not in the variable.</maml:para>
+      <maml:para>This command makes it easier to view the $PSReminderTag variable. The output of the command will show the ANSI escape sequence formatted with the sequence. The output will show NULL styles for tags defined in the database as part of saved event reminders, but not in the $PSReminderTag variable.</maml:para>
+      <maml:para>There are no commands to add or remove tags. The $PSReminderTag variable is a hashtable that you can modify using PowerShell. If you want to make the changes persistent, use Export-PSreminderPreference to save the changes.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1173,7 +1321,7 @@ Computername  : THINKX1-JH</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>This command has an alias of gprt.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1190,11 +1338,20 @@ Priority `e[1;3;38;5;199m
 Work     `e[38;5;156m
 travel</dev:code>
         <dev:remarks>
-          <maml:para>The style will be formatted with the corresponding style.</maml:para>
+          <maml:para>The style will be formatted with the corresponding style. In this example, the travel tag was found in the database as part of one or more event reminders, but not in the $PSReminderTag variable.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-PSReminderPreference</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Export-PSReminderPreference</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -1346,7 +1503,7 @@ travel</dev:code>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>Nsone</maml:name>
+          <maml:name>None</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1379,7 +1536,7 @@ travel</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>If you export a PSReminder database with the Export-PSReminderDatabase command, you can re-import it into a new or different SQLite database file with this command.</maml:para>
+      <maml:para>If you export a PSReminder database with the Export-PSReminderDatabase command, you can re-import it into a new or different SQLite database file with this command. Use this command to recreate a database from a backup or to move a database to a different location. The command will initialize a new database file and then import the data from the JSON file. You will get an error if the database file already exists.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2027,7 +2184,7 @@ travel</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>This command has an alias of rpsr.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -2144,7 +2301,7 @@ travel</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>PassThru</maml:name>
           <maml:description>
-            <maml:para>Write the updated event to the pipeline.</maml:para>
+            <maml:para>Write the updated PSReminder object to the pipeline.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -2252,7 +2409,7 @@ travel</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>PassThru</maml:name>
         <maml:description>
-          <maml:para>Write the updated event to the pipeline.</maml:para>
+          <maml:para>Write the updated PSReminder object to the pipeline.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -2316,7 +2473,7 @@ travel</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>This command has an alias of spsr.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -2334,7 +2491,7 @@ travel</dev:code>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Moving-PSReminder</maml:linkText>
+        <maml:linkText>Move-PSReminder</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>

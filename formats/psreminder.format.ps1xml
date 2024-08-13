@@ -27,7 +27,7 @@
           <TableColumnHeader>
             <Label>Date</Label>
             <Width>23</Width>
-            <Alignment>Left</Alignment>
+            <Alignment>right</Alignment>
           </TableColumnHeader>
           <TableColumnHeader>
             <Label>Countdown</Label>
@@ -105,32 +105,33 @@
               </TableColumnItem>
               <TableColumnItem>
                 <ScriptBlock>
+                $dt = $_.Date.ToString("g")
                 If ($host.name -match "console|code") {
                   if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
-                      "$([char]27)[91m$($_.Date)$([char]27)[0m"
+                    "$([char]27)[91m$dt$([char]27)[0m"
                   }
                   elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
-                        "$([char]27)[93m$($_.Date)$([char]27)[0m"
+                    "$([char]27)[93m$dt$([char]27)[0m"
                   }
                   elseif ($_.Expired) {
-                    "$([char]27)[9;38;5;163m$($_.Date)$([char]27)[0m"
+                    "$([char]27)[9;38;5;163m$dt$([char]27)[0m"
                   }
                   elseif (Test-Path Variable:PSReminderTag) {
                     $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
                     Select-Object -First 1
                     if ($Tagged) {
-                      "$($PSReminderTag[$Tagged])$($_.Date)$([char]27)[0m"
+                      "$($PSReminderTag[$Tagged])$dt$([char]27)[0m"
                     }
                     else {
-                      $_.Date
+                      $dt
                     }
                   }
                   else {
-                    $_.Date
+                    $dt
                   }
                 }
                 else {
-                  $_.Date
+                  $dt
                 }
                 </ScriptBlock>
               </TableColumnItem>

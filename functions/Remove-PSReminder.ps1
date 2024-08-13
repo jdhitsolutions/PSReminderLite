@@ -1,7 +1,7 @@
 Function Remove-PSReminder {
     [CmdletBinding(SupportsShouldProcess)]
-    [OutputType("None")]
-    [Alias("rpsr")]
+    [OutputType('None')]
+    [Alias('rpsr')]
 
     Param(
         [Parameter(
@@ -17,8 +17,10 @@ Function Remove-PSReminder {
         [string]$DatabasePath = $PSReminderDB
     )
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $InvokeParams = @{
             Query       = $null
@@ -29,7 +31,8 @@ Function Remove-PSReminder {
     } #begin
 
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Deleting tickle event $ID "
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $($strings.Deleting -f $ID)
         $InvokeParams.query = "DELETE From EventData where EventID='$ID'"
         if ($PSCmdlet.ShouldProcess("Event ID $ID")) {
             Try {
@@ -42,6 +45,7 @@ Function Remove-PSReminder {
     } #process
 
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 }

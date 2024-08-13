@@ -112,6 +112,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
+This command has an alias of rpsr.
+
 ## RELATED LINKS
 
 [Add-PSReminder](Add-PSReminder.md)

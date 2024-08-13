@@ -1,6 +1,6 @@
 Function Initialize-PSReminderDatabase {
     [CmdletBinding(SupportsShouldProcess)]
-    [OutputType('None','System.IO.FileInfo')]
+    [OutputType('None', 'System.IO.FileInfo')]
     Param(
         [Parameter(
             Position = 0,
@@ -17,8 +17,10 @@ Function Initialize-PSReminderDatabase {
         [switch]$Passthru
     )
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $NewTables = @"
 CREATE TABLE $PSReminderTable (
@@ -42,20 +44,21 @@ CREATE TABLE $PSReminderArchiveTable (
     } #begin
 
     Process {
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
         if (Test-Path -Path $DatabasePath) {
-            Write-Warning "A file was already found at $DatabasePath. Initialization aborted."
+            Write-Warning $($strings.DBExists -f $DatabasePath)
             #bail out if the database file already exists
             return
         }
 
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Creating SQLite database $DatabasePath"
+        _verbose $($strings.CreateDB -f $DatabasePath)
 
         Try {
             #need to explicitly pass the WhatIf preference to these commands
             New-MySQLiteDB -Path $DatabasePath -Comment $Comment -Force -ErrorAction Stop -WhatIf:$WhatIfPreference
-            Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Creating tables"
+            _verbose $($strings.CreateTables -f $PSReminderTable, $PSReminderArchiveTable)
             Write-Verbose $NewTables
-            if ($PSCmdlet.ShouldProcess($DatabasePath, 'Create table EventData')) {
+            if ($PSCmdlet.ShouldProcess($DatabasePath, $($strings.CreateEventData))) {
                 Invoke-MySQLiteQuery -Query $NewTables -Path $DatabasePath -ErrorAction Stop
             }
         } #Try
@@ -63,7 +66,7 @@ CREATE TABLE $PSReminderArchiveTable (
             Throw $_
         }
 
-        Write-Host 'Database initialization complete.' -ForegroundColor Green
+        Write-Information $strings.InitComplete
         if ((-not $WhatIfPreference) -and $Passthru) {
             Get-Item -Path $DatabasePath
         }
@@ -71,7 +74,9 @@ CREATE TABLE $PSReminderArchiveTable (
     } #process
 
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 
 }

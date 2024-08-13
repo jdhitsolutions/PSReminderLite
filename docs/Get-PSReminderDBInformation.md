@@ -28,11 +28,11 @@ This command will display information about the PSReminder database.
 ```powershell
 PS C:\> Get-PSReminderDBInformation
 
-   Database: C:\Users\Jeff\PSReminder.db [20KB]
+   Database: C:\Users\Jeff\PSReminder.db [84KB]
 
 Age         Reminders Expired Archived
 ---         --------- ------- --------
-00.01:47:55        25       3        2
+00.20:40:17        25      12      807
 ```
 
 ### Example 2
@@ -40,32 +40,34 @@ Age         Reminders Expired Archived
 ```powershell
 PS C:\> Get-PSReminderDBInformation | Select-Object *
 
+Age           : 20:42:20.3258389
 Name          : PSReminder.db
 Path          : C:\Users\Jeff\PSReminder.db
 PageSize      : 4096
-PageCount     : 5
+PageCount     : 21
 Reminders     : 25
-Expired       : 3
-Archived      : 2
-Size          : 20480
-Created       : 7/18/2024 9:31:22 AM
-Modified      : 7/19/2024 11:09:39 AM
+Expired       : 12
+Archived      : 807
+Size          : 86016
+Created       : 7/23/2024 3:59:03 PM
+Modified      : 7/24/2024 1:53:00 PM
 Author        : THINKX1-JH\Jeff
-Comment       : PSReminderLite database
+Comment       : Imported from a Tickle database
 Encoding      : UTF-8
 SQLiteVersion : 3.42.0
-Age           : 01:49:09.5592668
-Date          : 7/19/2024 12:58:48 PM
-Computername  : THINKX1-JH
+Date          : 7/25/2024 10:35:21 AM
+Computername  : PROSPERO
 ```
 
 The information object has additional properties not seen in the default display.
+The Age property is a script property and will always update.
+The object also has a RefreshInfo() method you can invoke to refresh a saved object.
 
 ## PARAMETERS
 
 ### -DatabasePath
 
-The path to the SQLite database
+The path to the SQLite database.
 
 ```yaml
 Type: String

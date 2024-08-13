@@ -20,8 +20,10 @@ Function Import-PSReminderDatabase {
         [string]$Comment = 'Imported PSReminderLite database'
     )
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
 
         $InvokeParams = @{
             Query       = ''
@@ -32,7 +34,8 @@ Function Import-PSReminderDatabase {
     } #begin
 
     Process {
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Importing database data from $Path"
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
+        _verbose $($strings.ImportData -f $Path)
         Try {
             #Create the new database
             Initialize-PSReminderDatabase -DatabasePath $DatabasePath -Comment $Comment
@@ -40,7 +43,7 @@ Function Import-PSReminderDatabase {
             #import event data
             $Import = Get-Content -Path $Path | ConvertFrom-Json
             $Import.EventData | ForEach-Object {
-                if ($_.Tags -match "\w+") {
+                if ($_.Tags -match '\w+') {
                     $TagString = $_.Tags -join ','
                 }
                 Else {
@@ -51,7 +54,7 @@ Function Import-PSReminderDatabase {
             }
             #import the archive data
             $Import.ArchivedEvent | ForEach-Object {
-                if ($_.Tags -match "\w+") {
+                if ($_.Tags -match '\w+') {
                     $TagString = $_.Tags -join ','
                 }
                 Else {
@@ -67,7 +70,9 @@ Function Import-PSReminderDatabase {
     } #process
 
     End {
-        Write-Host 'Import complete' -ForegroundColor Green
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        Write-Information $strings.ImportComplete
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 }

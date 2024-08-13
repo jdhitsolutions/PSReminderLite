@@ -14,7 +14,7 @@ Modify a PSReminder.
 ## SYNTAX
 
 ```yaml
-Set-PSReminder [-ID] <Int32> [-EventName <String>] [-Date <DateTime>] [-Comment <String>] [-Tags <String[]>] [-PassThru] [-DatabasePath <String>]  [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PSReminder [-ID] <Int32> [-EventName <String>] [-Date <DateTime>] [-Comment <String>] [-Tags <String[]>] [-PassThru] [-DatabasePath <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -130,7 +130,7 @@ Accept wildcard characters: False
 
 ### -PassThru
 
-Write the updated event to the pipeline.
+Write the updated PSReminder object to the pipeline.
 
 ```yaml
 Type: SwitchParameter
@@ -192,10 +192,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
+This command has an alias of spsr.
+
 ## RELATED LINKS
 
 [Get-PSReminder](Get-PSReminder.md)
 
-[Moving-PSReminder](Move-PSReminder.md)
+[Move-PSReminder](Move-PSReminder.md)
 
 [Remove-PSReminder](Remove-PSReminder.md)

@@ -20,7 +20,7 @@ Import-PSReminderDatabase [-Path] <String> [-DatabasePath <String>] [-Comment <S
 
 ## DESCRIPTION
 
-If you export a PSReminder database with the Export-PSReminderDatabase command, you can re-import it into a new or different SQLite database file with this command.
+If you export a PSReminder database with the Export-PSReminderDatabase command, you can re-import it into a new or different SQLite database file with this command. Use this command to recreate a database from a backup or to move a database to a different location. The command will initialize a new database file and then import the data from the JSON file. You will get an error if the database file already exists.
 
 ## EXAMPLES
 
@@ -113,6 +113,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

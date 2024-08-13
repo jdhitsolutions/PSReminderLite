@@ -1,24 +1,27 @@
 Function Export-PSReminderPreference {
     [cmdletbinding(SupportsShouldProcess)]
-    [OutputType('None','System.IO.FileInfo')]
+    [OutputType('None', 'System.IO.FileInfo')]
     Param(
-        [Parameter(HelpMessage = "Write the preference file to the pipeline")]
+        [Parameter(HelpMessage = 'Write the preference file to the pipeline')]
 
         [Switch]$Passthru
     )
 
     Begin {
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Starting $($MyInvocation.MyCommand)"
-        Write-Verbose "[$((Get-Date).TimeOfDay) BEGIN  ] Running under PowerShell version $($PSVersionTable.PSVersion)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'Begin'
+        _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
+        _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
         $PSReminderVariables = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
-        'PSReminderArchiveTable','PSReminderTag')
+            'PSReminderArchiveTable', 'PSReminderTag')
     } #begin
 
     Process {
+        $PSDefaultParameterValues['_verbose:block'] = 'Process'
         #$ExportPath is a module scoped variable defined in the root module
-        Write-Verbose "[$((Get-Date).TimeOfDay) PROCESS] Exporting PSReminder preferences to $ExportPath"
+        _verbose $($strings.ExportPref -f $ExportPath)
         Get-Variable $PSReminderVariables |
-        Select-Object Name,Value |
+        Select-Object Name, Value |
         ConvertTo-Json |
         Out-File -FilePath $ExportPath -Force
 
@@ -29,7 +32,9 @@ Function Export-PSReminderPreference {
     } #process
 
     End {
-        Write-Verbose "[$((Get-Date).TimeOfDay) END    ] Ending $($MyInvocation.MyCommand)"
+        $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
+        $PSDefaultParameterValues['_verbose:block'] = 'End'
+        _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end
 
-} #close Export-TicklePreference {
+} #close function
