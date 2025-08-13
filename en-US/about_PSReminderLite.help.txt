@@ -14,10 +14,10 @@ SHORT DESCRIPTION
     PS C:\> Get-AboutPSReminder
 
     ModuleName    : PSReminderLite
-    Version       : 0.5.0
+    Version       : 1.1.0
     MySQLite      : 0.14.0
     SQLiteVersion : 3.42.0
-    PSVersion     : 7.4.3
+    PSVersion     : 7.5.2
     Platform      : Win32NT
     Host          : ConsoleHost
 
@@ -353,26 +353,21 @@ Database Management
     1111 Alpha Meeting 2         08/15/2024 08:00:00 23.17:14:23
 
     REMOVING DATA
-    If you need to delete a reminder, use the Remove-PSReminder command. You
-    must specify the ID of the reminder you want to delete, although you can
-    take advantage of the pipeline.
+    If you need to delete a reminder, use the `Remove-PSReminder` command. You must specify
+    the ID of the reminder, although you can take advantage of the pipeline. You also will have
+    to specify the corresponding category
 
-    PS C:\> Get-PSReminder -Tag Testing | Remove-PSReminder -WhatIf
+    PS C:\> Get-PSReminder -Tag Testing | Remove-PSReminder -Category Reminder -WhatIf
     What if: Performing the operation "Remove-PSReminder" on target "Event ID 1110".
     What if: Performing the operation "Remove-PSReminder" on target "Event ID 1111"
 
-    Removing an item may affect ID numbering which auto increments. This is not a
-    major problem but be aware that your IDs may not be sequential if you remove
-    newly added items.
+    Removing an item may affect ID numbering which auto increments. This is not a major
+    problem but be aware that your IDs may not be sequential if you remove newly added items.
 
-NOTE
-    This module has had minimal testing on non-Windows platforms. If you find a
-    problem, please post an Issue. The module does not have commands for the
-    following activities, although some of these items could be scripted using Invoke-mySqliteQuery.
+# NOTE
 
-    - There is no way to remove items from the archive table.
-    - The default formatting for 24 and 48-hour reminders is hard-coded and not user-definable.
-    - The database is not password-protected.
+    This module has had minimal testing on non-Windows platforms. If you find a problem,
+    please post an Issue.
 
 TROUBLESHOOTING NOTE
     If there is something you would like to see or if you have questions or
@@ -383,4 +378,3 @@ KEYWORDS
     - reminder
     - psreminder
     - tickle
-

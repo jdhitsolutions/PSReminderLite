@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/ab7d83
 schema: 2.0.0
 ---
 
@@ -23,7 +23,7 @@ This command will display information about the PSReminder database.
 
 ## EXAMPLES
 
-### Example 1
+### Example 1: Get database information
 
 ```powershell
 PS C:\> Get-PSReminderDBInformation
@@ -35,7 +35,7 @@ Age         Reminders Expired Archived
 00.20:40:17        25      12      807
 ```
 
-### Example 2
+### Example 2: View database details
 
 ```powershell
 PS C:\> Get-PSReminderDBInformation | Select-Object *
@@ -94,6 +94,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### PSReminderDBInfo
 
 ## NOTES
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS
 

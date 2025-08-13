@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/550050
 schema: 2.0.0
 ---
 
@@ -98,6 +98,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tags
+
 Specify an optional array of tags
 
 ```yaml
@@ -160,6 +161,7 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
+
 ### -Confirm
 
 Prompts you for confirmation before running the cmdlet.
@@ -193,6 +195,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 This command has an alias of spsr.
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS
 

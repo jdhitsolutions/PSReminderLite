@@ -9,18 +9,29 @@ Function Set-PSReminder {
             ValueFromPipelineByPropertyName,
             Mandatory
         )]
+        [ValidateNotNullOrEmpty()]
         [int32]$ID,
+
         [Parameter(HelpMessage = 'The new name of the event')]
         [alias('Name')]
+        [ValidateNotNullOrEmpty()]
         [String]$EventName,
+
         [Parameter(HelpMessage = 'The new date of the event')]
+        [ValidateNotNullOrEmpty()]
         [DateTime]$Date,
+
         [Parameter(HelpMessage = 'The new comment for the event')]
         [String]$Comment,
+
         [Parameter(HelpMessage = 'Specify an optional array of tags')]
+        [ArgumentCompleter({$PSReminderTag.GetEnumerator().Name})]
+        [ValidateNotNullOrEmpty()]
         [String[]]$Tags,
+
         [Parameter(HelpMessage = 'Return the updated event')]
         [Switch]$PassThru,
+
         [Parameter(HelpMessage = 'The path to the SQLite database')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ Test-Path $_ })]

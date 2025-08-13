@@ -1,9 +1,9 @@
-Function Remove-PSReminder {
+function Remove-PSReminder {
     [CmdletBinding(SupportsShouldProcess)]
     [OutputType('None')]
     [Alias('rpsr')]
 
-    Param(
+    param(
         [Parameter(
             Position = 0,
             Mandatory,
@@ -11,12 +11,16 @@ Function Remove-PSReminder {
         )]
         [int32]$ID,
 
+        [Parameter(Mandatory,HelpMessage = 'Specify the reminder category: Archived, Expired, or Reminder.')]
+        [ValidateSet('Reminder', 'Expired', 'Archived')]
+        [string]$Category,
+
         [Parameter(HelpMessage = 'The path to the SQLite database')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ Test-Path $_ })]
         [string]$DatabasePath = $PSReminderDB
     )
-    Begin {
+    begin {
         $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
         $PSDefaultParameterValues['_verbose:block'] = 'Begin'
         _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
@@ -28,23 +32,31 @@ Function Remove-PSReminder {
             ErrorAction = 'Stop'
         }
 
+        $tableHash = @{
+            Reminder  = 'EventData'
+            Expired   = 'EventData'
+            Archived  = 'ArchivedEvent'
+        }
+
     } #begin
 
-    Process {
+    process {
         $PSDefaultParameterValues['_verbose:block'] = 'Process'
-        _verbose $($strings.Deleting -f $ID)
-        $InvokeParams.query = "DELETE From EventData where EventID='$ID'"
+        $tableName = $tableHash[$Category]
+        _verbose $($strings.Deleting -f $ID,$tableName)
+        $InvokeParams.query = "DELETE From $tableName where EventID='$ID'"
+        Write-Information $InvokeParams -Tags Process
         if ($PSCmdlet.ShouldProcess("Event ID $ID")) {
-            Try {
+            try {
                 Invoke-MySQLiteQuery @InvokeParams
             }
-            Catch {
-                Throw $_
+            catch {
+                throw $_
             }
         } #should process
     } #process
 
-    End {
+    end {
         $PSDefaultParameterValues['_verbose:block'] = 'End'
         _verbose $($strings.Ending -f $($MyInvocation.MyCommand))
     } #end

@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/025aab
 schema: 2.0.0
 ---
 
@@ -99,6 +99,7 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
+
 ### -Confirm
 
 Prompts you for confirmation before running the cmdlet.
@@ -128,5 +129,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 
 ## NOTES
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS

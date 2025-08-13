@@ -7,7 +7,7 @@ ConvertFrom-StringData @'
     Starting = Starting module function {0}
     Adding = Adding event "{0}"
     Processing = Processing EventID {0}
-    Deleting = Deleting PSReminder event -f {0}
+    Deleting = Deleting PSReminder event {0} from {1}
     DBExists = A file was already found at {0}. Please remove it or specify a different path. Initialization aborted.
     CreateDB = Creating SQLite database {0}
     CreateTables = Creating SQLite database tables
@@ -41,4 +41,13 @@ ConvertFrom-StringData @'
     GettingPreference = Getting PSReminder preferences
     Default = Default
     ByMonth = Getting unexpired events for {0}/{1}
+    UsingDB = Using SQLite database {0}
+    UsingModule = Using module version {0}
+    UsingHost = Using PowerShell Host {0}
+    UsingOS = Running under Operating System {0}
+    UsingMySQLite = Using MySQLite module version {0}
+    UsingPSReminder = Using PSReminder module version {0}
+    OpenMarkdownHelp = Opening the help file as markdown
+    OpenPDFHelp = Attempting to open {0} with the default PDF viewer
+    FailPDF = Failed to open the help file. {0}. You can try opening the help as markdown.
 '@

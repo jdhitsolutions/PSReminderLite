@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/77f036
 schema: 2.0.0
 ---
 
@@ -23,7 +23,7 @@ SQLite doesn't have a backup mechanism like SQL Server. You can use this command
 
 ## EXAMPLES
 
-### Example 1
+### Example 1: Export the database
 
 ```powershell
 PS C:\> Export-PSReminderDatabase c:\temp\psrexport.json
@@ -111,6 +111,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 
 ## NOTES
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS
 

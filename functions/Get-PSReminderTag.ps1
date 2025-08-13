@@ -20,7 +20,7 @@ Function Get-PSReminderTag {
         $pref.ShowTags()
 
         _verbose $($strings.GetUndefinedTags)
-        (Invoke-MySQLiteQuery -Query "select tags from $PSReminderTable where tags like '%'" -Path $PSReminderDB).foreach({ $_.tags.split(',') }) |
+        (Invoke-MySQLiteQuery -Query "select tags from $PSReminderTable where tags <>''" -Path $PSReminderDB).foreach({ $_.tags.split(',') }) |
         Select-Object -Unique |
         Where-Object { $PSReminderTag.keys -notContains $_ } |
         ForEach-Object {

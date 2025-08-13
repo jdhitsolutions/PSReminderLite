@@ -247,11 +247,12 @@
     <maml:alertSet>
       <maml:alert>
         <maml:para>This command has aliases of apsr and New-PSReminder.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <maml:title>------------------ Example 1: Add a reminder ------------------</maml:title>
         <dev:code>PS C:\&gt; Add-PSReminder -EventName "HR Review" -Date "9/1/2024 4:00PM" -Tags "Work"</dev:code>
         <dev:remarks>
           <maml:para>Add a reminder to the database.</maml:para>
@@ -259,6 +260,10 @@
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/33b48f</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminder</maml:linkText>
         <maml:uri></maml:uri>
@@ -404,12 +409,12 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <maml:title>---------------- Example 1: Export the database ----------------</maml:title>
         <dev:code>PS C:\&gt; Export-PSReminderDatabase c:\temp\psrexport.json</dev:code>
         <dev:remarks>
           <maml:para>Export the database to a JSON file.</maml:para>
@@ -417,6 +422,10 @@
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/77f036</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Import-PSReminderDatabase</maml:linkText>
         <maml:uri></maml:uri>
@@ -542,7 +551,7 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -555,6 +564,10 @@
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/c52d6d</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminderPreference</maml:linkText>
         <maml:uri></maml:uri>
@@ -601,7 +614,7 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -622,6 +635,10 @@ Host          : ConsoleHost</dev:code>
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/280e81</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminderDbInformation</maml:linkText>
         <maml:uri></maml:uri>
@@ -1020,11 +1037,12 @@ Host          : ConsoleHost</dev:code>
     <maml:alertSet>
       <maml:alert>
         <maml:para>This command has an alias of gpsr.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <maml:title>----------- Example 1: Get reminders by default days -----------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminder
 
 
@@ -1038,7 +1056,7 @@ ID   Event                      Comment                 Date    Countdown
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <maml:title>--------------- Example 2: Get a reminder by ID ---------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminder -id 19 | Select-Object *
 
 Name    : Migration Planning meeting
@@ -1052,7 +1070,7 @@ Expired : False</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <maml:title>----------------- Example 3: Get all reminders -----------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminder -All | Format-Table -view date
 
    Month: Aug 2024
@@ -1069,6 +1087,10 @@ Expired : False</dev:code>
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/b1bf73</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Add-PSReminder</maml:linkText>
         <maml:uri></maml:uri>
@@ -1148,12 +1170,12 @@ Expired : False</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <maml:title>------------- Example 1: Get database information -------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminderDBInformation
 
    Database: C:\Users\Jeff\PSReminder.db [84KB]
@@ -1166,7 +1188,7 @@ Age         Reminders Expired Archived
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <maml:title>--------------- Example 2: View database details ---------------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminderDBInformation | Select-Object *
 
 Age           : 20:42:20.3258389
@@ -1193,6 +1215,10 @@ Computername  : PROSPERO</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/ab7d83</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
         <maml:linkText>Get-AboutPSReminder</maml:linkText>
         <maml:uri></maml:uri>
       </maml:navigationLink>
@@ -1208,11 +1234,12 @@ Computername  : PROSPERO</dev:code>
       <command:verb>Get</command:verb>
       <command:noun>PSReminderPreference</command:noun>
       <maml:description>
-        <maml:para>Get all PSReminder preferences</maml:para>
+        <maml:para>Get PSReminder preferences</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Preferences for the PSReminderLite module are stored as global variables. Run this command to get a report of all preferences.</maml:para>
+      <maml:para>Preferences for the PSReminderLite module are stored as global variables. Run this command to get a report of all preferences. These settings are defined as variables. You can change them like any other variable in PowerShell.</maml:para>
+      <maml:para>If you customize the preferences, you can export them to a JSON file using `Export-PSReminderPreference`. If the file exists, it will be used the next time you import the module to define your preference variables.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1242,7 +1269,7 @@ Computername  : PROSPERO</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1258,6 +1285,13 @@ PSReminderDefaultDays PSReminderTable PSReminderArchiveTable
 --------------------- --------------- ----------------------
          14              EventData        ArchivedEvent
 
+PSReminderStyle
+
+  Name                     Style
+  PSReminderAlertStyle     `e[91m
+  PSReminderWarningStyle   `e[93m
+  PSReminderExpiredStyle   `e[9;38;5;171m
+
 PSReminderTags
 
   Tag            Style
@@ -1272,8 +1306,44 @@ PSReminderTags
           <maml:para>The Style output will be formatted with the corresponding ANSI sequence.</maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $p = Get-PSReminderPreference
+PS C:\&gt; $p.showStyle()
+
+Name                   Style
+----                   -----
+PSReminderAlertStyle   `e[91m
+PSReminderWarningStyle `e[93m
+PSReminderExpiredStyle `e[9;38;5;171m</dev:code>
+        <dev:remarks>
+          <maml:para>You can use the `showStyle()` method to display just the style information. The output will for styled with the corresponding ANSI sequence.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $p.showTags()
+
+Tag      Style
+---      -----
+Event    `e[38;5;87m
+Priority `e[1;3;38;5;199m
+Holiday  `e[38;5;225m
+Testing  `e[3;92m
+Personal `e[94m
+travel   `e[38;5;141m
+Family   `e[38;5;156m
+Work     `e[38;5;192m</dev:code>
+        <dev:remarks>
+          <maml:para>Or use the `showTags()` method to display just the tag information. The output will for styled with the corresponding ANSI sequence.</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/2db9d2</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Export-PSReminderPreference</maml:linkText>
         <maml:uri></maml:uri>
@@ -1322,6 +1392,7 @@ PSReminderTags
     <maml:alertSet>
       <maml:alert>
         <maml:para>This command has an alias of gprt.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1343,6 +1414,10 @@ travel</dev:code>
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/0e5438</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminderPreference</maml:linkText>
         <maml:uri></maml:uri>
@@ -1512,7 +1587,7 @@ travel</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1524,7 +1599,12 @@ travel</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/025aab</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -1685,7 +1765,7 @@ travel</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1698,6 +1778,10 @@ travel</dev:code>
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/741270</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Export-PSReminderDatabase</maml:linkText>
         <maml:uri></maml:uri>
@@ -1870,7 +1954,7 @@ travel</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1883,6 +1967,10 @@ travel</dev:code>
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/0c4b0a</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminderDBInformation</maml:linkText>
         <maml:uri></maml:uri>
@@ -2026,19 +2114,30 @@ travel</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <maml:title>----------- Example 1: Archive all expired reminders -----------</maml:title>
         <dev:code>PS C:\&gt; Get-PSReminder -Expired | Move-PSReminder</dev:code>
         <dev:remarks>
           <maml:para>Archive all expired events.</maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>---------- Example 2: Archive a specific event by ID ----------</maml:title>
+        <dev:code>PS C:\&gt; Move-PSReminder -Id 123</dev:code>
+        <dev:remarks>
+          <maml:para>Archive event reminder with an ID of 123.</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/c30dfb</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminder</maml:linkText>
         <maml:uri></maml:uri>
@@ -2046,6 +2145,89 @@ travel</dev:code>
       <maml:navigationLink>
         <maml:linkText>Set-PSReminder</maml:linkText>
         <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Open-PSReminderLiteHelp</command:name>
+      <command:verb>Open</command:verb>
+      <command:noun>PSReminderLiteHelp</command:noun>
+      <maml:description>
+        <maml:para>Open a PDF help file.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Open a PDF help file for the PSReminderLite module using the default associated application. As an alterative, you can view the project's README file as a Markdown document.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Open-PSReminderLiteHelp</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="md">
+          <maml:name>AsMarkdown</maml:name>
+          <maml:description>
+            <maml:para>Open the README help file as a Markdown document.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="md">
+        <maml:name>AsMarkdown</maml:name>
+        <maml:description>
+          <maml:para>Open the README help file as a Markdown document.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Open-PSReminderLiteHelp</dev:code>
+        <dev:remarks>
+          <maml:para>This command opens the PDF help file for the PSReminderLite module.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/e5fbeb</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2059,7 +2241,9 @@ travel</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Events in the PSReminder database remain, even though they may not be displayed by default. Normally, you can archive expired events. However, you can also delete entries with this command.</maml:para>
+      <maml:para>Events in the PSReminder database remain, even though they may not be displayed by default. Normally, you will archive expired events. However, you can delete entries with this command. You will need to specify the table or category from which you want to delete the event. If you specify the wrong category, the command will complete successfully but will not delete anything.</maml:para>
+      <maml:para>You might want to export items before deleting them:</maml:para>
+      <maml:para>Get-PSReminder -Archived | where tags -contains holiday | ConvertTo-Json | Out-File d:\temp\archived-holidays.json</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2079,7 +2263,7 @@ travel</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>DatabasePath</maml:name>
           <maml:description>
-            <maml:para>The path to the SQLite database</maml:para>
+            <maml:para>The path to the SQLite database.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2110,6 +2294,18 @@ travel</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Category</maml:name>
+          <maml:description>
+            <maml:para>Specify the reminder category: Archived, Expired, or Reminder.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2128,7 +2324,7 @@ travel</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>DatabasePath</maml:name>
         <maml:description>
-          <maml:para>The path to the SQLite database</maml:para>
+          <maml:para>The path to the SQLite database.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2161,6 +2357,18 @@ travel</dev:code>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Category</maml:name>
+        <maml:description>
+          <maml:para>Specify the reminder category: Archived, Expired, or Reminder.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -2185,18 +2393,38 @@ travel</dev:code>
     <maml:alertSet>
       <maml:alert>
         <maml:para>This command has an alias of rpsr.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Remove-PSReminder -id 11</dev:code>
+        <dev:code>PS C:\&gt; Remove-PSReminder -id 11 -Category Reminder</dev:code>
         <dev:remarks>
           <maml:para>Delete an event from the database by ID number. This will NOT archive it but permanently delete it from the database.</maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-PSReminder -Archived | Select-Object -first 5 | Remove-PSReminder -Category Archived -Verbose
+VERBOSE: [14:56:51.4386945 BEGIN  ] Remove-PSReminder-&gt;  Starting module function Remove-PSReminder
+VERBOSE: [14:56:51.4389814 BEGIN  ] Remove-PSReminder-&gt;  Running the command with PowerShell version 7.5.2
+VERBOSE: [14:56:51.6022072 PROCESS] Get-PSReminder-&gt;  Deleting PSReminder event 105 from ArchivedEvent
+VERBOSE: [14:56:51.6029188 PROCESS] Get-PSReminder-&gt;  Deleting PSReminder event 101 from ArchivedEvent
+VERBOSE: [14:56:51.6036329 PROCESS] Get-PSReminder-&gt;  Deleting PSReminder event 123 from ArchivedEvent
+VERBOSE: [14:56:51.6041176 PROCESS] Get-PSReminder-&gt;  Deleting PSReminder event 102 from ArchivedEvent
+VERBOSE: [14:56:51.6046435 PROCESS] Get-PSReminder-&gt;  Deleting PSReminder event 124 from ArchivedEvent
+VERBOSE: [14:56:51.6051111 END    ] Get-PSReminder-&gt;  Ending module function Remove-PSReminder</dev:code>
+        <dev:remarks>
+          <maml:para>Permanently delete the first five archived reminders from the database. You must specify the appropriate category. If you specify the wrong category, the command will complete successfully but will not delete anything.</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/307d69</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Add-PSReminder</maml:linkText>
         <maml:uri></maml:uri>
@@ -2474,6 +2702,7 @@ travel</dev:code>
     <maml:alertSet>
       <maml:alert>
         <maml:para>This command has an alias of spsr.</maml:para>
+        <maml:para>Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -2486,6 +2715,10 @@ travel</dev:code>
       </command:example>
     </command:examples>
     <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://jdhitsolutions.com/yourls/550050</maml:uri>
+      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>Get-PSReminder</maml:linkText>
         <maml:uri></maml:uri>

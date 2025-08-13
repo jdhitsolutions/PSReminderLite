@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/c30dfb
 schema: 2.0.0
 ---
 
@@ -27,13 +27,21 @@ to your PowerShell profile. This command has an alias of Archive-PSReminder.
 
 ## EXAMPLES
 
-### Example 1
+### Example 1: Archive all expired reminders
 
 ```powershell
 PS C:\> Get-PSReminder -Expired | Move-PSReminder
 ```
 
 Archive all expired events.
+
+### Example 2: Archive a specific event by ID
+
+```powershell
+PS C:\> Move-PSReminder -Id 123
+```
+
+Archive event reminder with an ID of 123.
 
 ## PARAMETERS
 
@@ -52,7 +60,6 @@ Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
-
 
 ### -DatabasePath
 
@@ -116,6 +123,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 
 ## NOTES
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS
 

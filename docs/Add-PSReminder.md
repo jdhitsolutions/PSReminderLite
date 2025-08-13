@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/33b48f
 schema: 2.0.0
 ---
 
@@ -24,7 +24,7 @@ Add a PSReminder to the database. The command will use the global PSReminder var
 
 ## EXAMPLES
 
-### Example 1
+### Example 1: Add a reminder
 
 ```powershell
 PS C:\> Add-PSReminder -EventName "HR Review" -Date "9/1/2024 4:00PM" -Tags "Work"
@@ -182,6 +182,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 This command has aliases of apsr and New-PSReminder.
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS
 

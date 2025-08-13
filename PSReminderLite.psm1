@@ -19,8 +19,13 @@ ForEach-Object { . $_.FullName }
 
 #region Define module variables
 
+$moduleName = Split-Path -Path $PSScriptRoot -Leaf
+$manifest = Join-Path -Path $PSScriptRoot -ChildPath "$moduleName.psd1"
+$in = Import-PowerShellDataFile -Path $manifest
+$moduleVersion = $in.moduleVersion
+#Write-Host "Importing $manifest version $moduleVersion" -fore green
 $ExportPath = Join-Path -Path $HOME -ChildPath '.psreminder.json'
-If (Test-Path -Path $ExportPath) {
+if (Test-Path -Path $ExportPath) {
     #use the preference file
     Get-Content -Path $ExportPath | ConvertFrom-Json |
     ForEach-Object {
@@ -36,12 +41,22 @@ If (Test-Path -Path $ExportPath) {
             Set-Variable -Name PSReminderTag -Value $Hash -Force
         }
     }
-    <#
-Get-Content -Path $ExportPath | ConvertFrom-Json |
-    ForEach-Object {
-        Set-Variable -Name $_.Name -Value $_.Value -Force
+    #13 August 2025 -Add new defaults if not previously exported
+    $new = @{
+        PSReminderAlertStyle   = "`e[91m"
+        PSReminderWarningStyle = "`e[93m"
+        PSReminderExpiredStyle = "`e[9;38;5;163m"
     }
-#>
+    $new.GetEnumerator() | Foreach-Object {
+        $item = $_
+        Try {
+            Get-Variable -name $item.Name -ErrorAction Stop
+        }
+        Catch {
+            #Write-Host "Defining $($item.name)"
+            Set-Variable -name $item.Name -Value $item.value -Force
+        }
+    }
 }
 else {
     #the default number of days to display for Show-TickleEvents
@@ -51,6 +66,10 @@ else {
     $PSReminderDB = Join-Path -Path $HOME -ChildPath PSReminder.db
     $PSReminderTable = 'EventData'
     $PSReminderArchiveTable = 'ArchivedEvent'
+    $PSReminderAlertStyle = "`e[91m"
+    $PSReminderWarningStyle = "`e[93m"
+    $PSReminderExpiredStyle = "`e[9;38;5;163m"
+
     #define a default tag list and style settings
     $PSReminderTag = @{
         'Work'     = "`e[38;5;192m"
@@ -59,7 +78,7 @@ else {
     }
 }
 
-If (-Not (Test-Path -Path $PSReminderDB)) {
+if (-not (Test-Path -Path $PSReminderDB)) {
     Write-Warning "The database file $PSReminderDB does not exist or could not be found. Please run Initialize-PSReminderDatabase to create the database."
 }
 
@@ -67,7 +86,7 @@ If (-Not (Test-Path -Path $PSReminderDB)) {
 
 #region Class definitions
 
-Class PSReminder {
+class PSReminder {
     [String]$Event
     [DateTime]$Date
     [String]$Comment
@@ -92,7 +111,7 @@ Class PSReminder {
     }
 } #close PSReminder class
 
-Class ArchivePSReminder {
+class ArchivePSReminder {
     [String]$Event
     [DateTime]$Date
     [String]$Comment
@@ -114,7 +133,7 @@ Class ArchivePSReminder {
     }
 } #close ArchivePSReminder class
 
-Class PSReminderDBInfo {
+class PSReminderDBInfo {
     [string]$Name
     [string]$Path
     [int32]$PageSize
@@ -134,7 +153,7 @@ Class PSReminderDBInfo {
 
     #methods
     hidden [void]GetDBInfo () {
-        Try {
+        try {
             _verbose ($script:strings.GetDBInfo -f $this.Path)
             $r = Get-MySQLiteDB -Path $this.Path -ErrorAction Stop
             $this.Name = Split-Path -Path $r.path -Leaf
@@ -146,8 +165,8 @@ Class PSReminderDBInfo {
             $this.Encoding = $r.Encoding
             $this.SQLiteVersion = $r.SQLiteVersion
         }
-        Catch {
-            Throw $_
+        catch {
+            throw $_
         }
     }
 
@@ -180,7 +199,7 @@ Class PSReminderDBInfo {
         $InvokeParams.Query = "Select count(*) AS Count from $global:PSReminderTable Where EventDate< '$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))'"
         $this.Expired = (Invoke-MySQLiteQuery @InvokeParams).count
 
-        If ($conn.state -eq 'Open') {
+        if ($conn.state -eq 'Open') {
             _verbose $script:strings.CloseDB
             $conn.Close()
         }
@@ -195,20 +214,35 @@ Class PSReminderDBInfo {
 
 } #close PSReminderDBInfo class
 
-Class PSReminderPreference {
+class PSReminderPreference {
     [string]$PSReminderDB = $global:PSReminderDB
     [string]$PSReminderDefaultDays = $global:PSReminderDefaultDays
     [string]$PSReminderTable = $global:PSReminderTable
     [string]$PSReminderArchiveTable = $global:PSReminderArchiveTable
+    [string]$PSReminderAlertStyle = $global:PSReminderAlertStyle.Replace("$([char]27)", '`e')
+    [string]$PSReminderWarningStyle = $global:PSReminderWarningStyle.Replace("$([char]27)", '`e')
+    [string]$PSReminderExpiredStyle = $global:PSReminderExpiredStyle.Replace("$([char]27)", '`e')
     [hashtable]$PSReminderTag = $global:PSReminderTag
 
-    [object]ShowTags () {
-        $r = $this.PSReminderTag.GetEnumerator() | Foreach-Object {
+    [object]ShowTags() {
+        $r = $this.PSReminderTag.GetEnumerator() | ForEach-Object {
             $stringValue = $_.Value.Replace("$([char]27)", '`e')
             [PSCustomObject]@{
                 PSTypeName = 'PSReminderTag'
                 Tag        = $_.Key
-                Style      = '{0}{1}{2}' -f $($_.Value), $stringValue, $("`e[0m")
+                Style      = "{0}{1}{2}" -f $($_.Value), $stringValue, $("`e[0m")
+            }
+        }
+        return $r
+    }
+    [object]ShowStyle() {
+        $r = $this.PSObject.Properties.where({$_.Name -match "style$"}) |
+        ForEach-Object {
+             $ansi = $_.value.Replace('`e',"$([char]27)" )
+            [PSCustomObject]@{
+                PSTypeName = 'PSReminderStyle'
+                Name        = $_.Name
+                Style       = "{0}{1}{2}" -f $ansi,$_.value, $("`e[0m")
             }
         }
         return $r
@@ -237,26 +271,31 @@ Update-TypeData -TypeName PSReminderDBInfo -MemberType ScriptProperty -MemberNam
 Register-ArgumentCompleter -CommandName Add-PSReminder, Set-PSReminder -ParameterName Tags -ScriptBlock {
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
 
-    (Get-PSReminderTag).Where({ $_.Tag -like "$WordToComplete*" }).ForEach({ [System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag) })
+    $PSReminderTag.GetEnumerator() | Where-Object { $_.Name -like "$WordToComplete*" } |
+    ForEach-Object { [System.Management.Automation.CompletionResult]::new($_.Name.Trim(), $_.Name.Trim(), 'ParameterValue', $_.Name) }
+
 }
 
 Register-ArgumentCompleter -CommandName Get-PSReminder -ParameterName Tag -ScriptBlock {
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
 
-    (Get-PSReminderTag).Where({ $_.Tag -like "$WordToComplete*" }).ForEach({ [System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag) })
+    #(Get-PSReminderTag).Where({ $_.Tag -like "*$WordToComplete*" }).ForEach({ [System.Management.Automation.CompletionResult]::new($_.Tag.Trim(), $_.Tag.Trim(), 'ParameterValue', $_.Tag) })
+    $PSReminderTag.GetEnumerator() | Where-Object { $_.Name -like "$WordToComplete*" } |
+    ForEach-Object { [System.Management.Automation.CompletionResult]::new($_.Name.Trim(), $_.Name.Trim(), 'ParameterValue', $_.Name) }
 }
 
 #endregion
 
 $export = @{
     Variable = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
-        'PSReminderArchiveTable', 'PSReminderTag')
+        'PSReminderArchiveTable', 'PSReminderTag', 'PSReminderAlertStyle',
+        'PSReminderWarningStyle','PSReminderExpiredStyle')
     Function = @('Export-PSReminderPreference', 'Initialize-PSReminderDatabase',
         'Add-PSReminder', 'Get-PSReminder', 'Get-PSReminderDBInformation', 'Set-PSReminder',
         'Remove-PSReminder', 'Export-PSReminderDatabase', 'Import-PSReminderDatabase',
         'Move-PSReminder', 'Get-AboutPSReminder', 'Get-PSReminderTag',
-        'Import-FromTickleDatabase','Get-PSReminderPreference')
-    Alias    = @('apsr', 'gpsr', 'spsr', 'rpsr', 'Archive-PSReminder', 'gprt','New-PSReminder')
+        'Open-PSReminderLiteHelp', 'Import-FromTickleDatabase', 'Get-PSReminderPreference')
+    Alias    = @('apsr', 'gpsr', 'spsr', 'rpsr', 'Archive-PSReminder', 'gprt', 'New-PSReminder')
 }
 
 Export-ModuleMember @export

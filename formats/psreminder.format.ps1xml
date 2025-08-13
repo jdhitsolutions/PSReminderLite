@@ -12,7 +12,7 @@
           <TableColumnHeader>
             <Label>ID</Label>
             <Width>4</Width>
-            <Alignment>Left</Alignment>
+            <Alignment>right</Alignment>
           </TableColumnHeader>
           <TableColumnHeader>
             <Label>Event</Label>
@@ -44,14 +44,14 @@
               <TableColumnItem>
                 <ScriptBlock>
                 If ($host.name -match "console|code") {
-                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
-                      "$([char]27)[91m$($_.Event)$([char]27)[0m"
+                  if ((-Not $_.Expired) -AND ($_.countdown.TotalDays -le 1)) {
+                      "$($global:PSReminderAlertStyle)$($_.Event)$([char]27)[0m"
                   }
-                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
-                        "$([char]27)[93m$($_.Event)$([char]27)[0m"
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.TotalDays -lt 2)) {
+                        "$($global:PSReminderWarningStyle)$($_.Event)$([char]27)[0m"
                   }
                   elseif ($_.Expired) {
-                    "$([char]27)[9;38;5;163m$($_.event)$([char]27)[0m"
+                    "$($global:PSReminderExpiredStyle)$($_.event)$([char]27)[0m"
                   }
                   elseif (Test-Path Variable:PSReminderTag) {
                     $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
@@ -75,14 +75,14 @@
               <TableColumnItem>
                 <ScriptBlock>
                 If ($host.name -match "console|code") {
-                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
-                      "$([char]27)[91m$($_.Comment)$([char]27)[0m"
+                  if ((-Not $_.Expired) -AND ($_.countdown.TotalDays -le 1)) {
+                      "$($global:PSReminderAlertStyle)$($_.Comment)$([char]27)[0m"
                   }
-                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
-                        "$([char]27)[93m$($_.Comment)$([char]27)[0m"
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.TotalDays -lt 2)) {
+                        "$($global:PSReminderWarningStyle)$($_.Comment)$([char]27)[0m"
                   }
                   elseif ($_.Expired) {
-                    "$([char]27)[9;38;5;163m$($_.Comment)$([char]27)[0m"
+                    "$($global:PSReminderExpiredStyle)$($_.Comment)$([char]27)[0m"
                   }
                   elseif (Test-Path Variable:PSReminderTag) {
                     $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
@@ -107,14 +107,14 @@
                 <ScriptBlock>
                 $dt = $_.Date.ToString("g")
                 If ($host.name -match "console|code") {
-                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
-                    "$([char]27)[91m$dt$([char]27)[0m"
+                  if ((-Not $_.Expired) -AND ($_.countdown.TotalDays -le 1)) {
+                    "$($global:PSReminderAlertStyle)$dt$([char]27)[0m"
                   }
-                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
-                    "$([char]27)[93m$dt$([char]27)[0m"
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.TotalDays -lt 2)) {
+                    "$($global:PSReminderWarningStyle)$dt$([char]27)[0m"
                   }
                   elseif ($_.Expired) {
-                    "$([char]27)[9;38;5;163m$dt$([char]27)[0m"
+                    "$($global:PSReminderExpiredStyle)$dt$([char]27)[0m"
                   }
                   elseif (Test-Path Variable:PSReminderTag) {
                     $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
@@ -145,14 +145,14 @@
                     $value = $count
                   }
                 If ($host.name -match "console|code") {
-                  if ((-Not $_.Expired) -AND ($_.countdown.totaldays -le 1)) {
-                      "$([char]27)[91m$($value)$([char]27)[0m"
+                  if ((-Not $_.Expired) -AND ($_.countdown.TotalDays -le 1)) {
+                      "$($global:PSReminderAlertStyle)$($value)$([char]27)[0m"
                   }
-                  elseif ((-Not $_.Expired) -AND ($_.countdown.totaldays -lt 2)) {
-                        "$([char]27)[93m$($value)$([char]27)[0m"
+                  elseif ((-Not $_.Expired) -AND ($_.countdown.TotalDays -lt 2)) {
+                        "$($global:PSReminderWarningStyle)$($value)$([char]27)[0m"
                   }
                   elseif ($_.Expired) {
-                    "$([char]27)[9;38;5;163m$($value)$([char]27)[0m"
+                    "$($global:PSReminderExpiredStyle)$($value)$([char]27)[0m"
                   }
                   elseif (Test-Path Variable:PSReminderTag) {
                     $Tagged = $_.tags | where {$PSReminderTag.ContainsKey($_)} |
@@ -194,7 +194,7 @@
           <TableColumnHeader>
             <Label>ID</Label>
             <Width>6</Width>
-            <Alignment>left</Alignment>
+            <Alignment>right</Alignment>
           </TableColumnHeader>
           <TableColumnHeader>
             <Label>Event</Label>

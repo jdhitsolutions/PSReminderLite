@@ -13,7 +13,8 @@ Function Export-PSReminderPreference {
         _verbose $($strings.Starting -f $($MyInvocation.MyCommand))
         _verbose $($strings.PSVersion -f $($PSVersionTable.PSVersion))
         $PSReminderVariables = @('PSReminderDefaultDays', 'PSReminderDB', 'PSReminderTable',
-            'PSReminderArchiveTable', 'PSReminderTag')
+            'PSReminderArchiveTable', 'PSReminderTag','PSReminderAlertStyle',
+            'PSReminderExpiredStyle','PSReminderWarningStyle')
     } #begin
 
     Process {

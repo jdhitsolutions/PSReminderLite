@@ -16,20 +16,20 @@ OR
 Install-PSResource PSReminderLite
 ```
 
-The module requires a 64-bit PowerShell 7 platform.
+The module requires a 64-bit PowerShell 7 platform. Windows on ARM64 is supported.
 
 >*The module has not been tested extensively on non-windows platforms*.
 
 Once the module is installed, you can run `Get-AboutPSReminder` to see the module information.
 
-```shell
+```powershell
 PS C:\> Get-AboutPSReminder
 
 ModuleName    : PSReminderLite
-Version       : 1.0.0
-MySQLite      : 0.13.0
+Version       : {1.0.0, 1.1.0}
+MySQLite      : 1.1.0
 SQLiteVersion : 3.42.0
-PSVersion     : 7.4.4
+PSVersion     : 7.5.2
 Platform      : Win32NT
 Host          : ConsoleHost
 ```
@@ -40,20 +40,23 @@ This may be helpful when filing an issue or asking for help.
 
 All module commands should have full help with examples. The `About` help topic is a subset of this document.
 
-- [Add-PSReminder](docs/Add-PSReminder.md)
-- [Export-PSReminderDatabase](docs/Export-PSReminderDatabase.md)
-- [Export-PSReminderPreference](docs/Export-PSReminderPreference.md)
-- [Get-AboutPSReminder](docs/Get-AboutPSReminder.md)
-- [Get-PSReminder](docs/Get-PSReminder.md)
-- [Get-PSReminderDBInformation](docs/Get-PSReminderDBInformation.md)
-- [Get-PSReminderPreference](docs/Get-PSReminderPreference.md)
-- [Get-PSReminderTag](docs/Get-PSReminderTag.md)
-- [Import-FromTickleDatabase](docs/Import-FromTickleDatabase.md)
-- [Import-PSReminderDatabase](docs/Import-PSReminderDatabase.md)
-- [Initialize-PSReminderDatabase](docs/Initialize-PSReminderDatabase.md)
-- [Move-PSReminder](docs/Move-PSReminder.md)
-- [Remove-PSReminder](docs/Remove-PSReminder.md)
-- [Set-PSReminder](docs/Set-PSReminder.md)
+| Name | Alias | Synopsis |
+|------|-------|----------|
+| [Add-PSReminder](docs/Add-PSReminder.md) | *apsr*,*New-PSReminder* | Add a PSReminder to the database. |
+| [Export-PSReminderDatabase](docs/Export-PSReminderDatabase.md) |  | Export the PSReminder database. |
+| [Export-PSReminderPreference](docs/Export-PSReminderPreference.md) |  | Export PSReminder variables. |
+| [Get-AboutPSReminder](docs/Get-AboutPSReminder.md) |  | Get module information. |
+| [Get-PSReminder](docs/Get-PSReminder.md) | *gpsr* | Get one or more PSReminder entries. |
+| [Get-PSReminderDBInformation](docs/Get-PSReminderDBInformation.md) |  | Get information about the PSReminderEventDB database. |
+| [Get-PSReminderPreference](docs/Get-PSReminderPreference.md) |  | Get PSReminder preferences |
+| [Get-PSReminderTag](docs/Get-PSReminderTag.md) | *gprt* | Get defined PSReminder tags |
+| [Import-FromTickleDatabase](docs/Import-FromTickleDatabase.md) |  | Import data from a Tickle database |
+| [Import-PSReminderDatabase](docs/Import-PSReminderDatabase.md) |  | Import PSReminder data from a JSON file. |
+| [Initialize-PSReminderDatabase](docs/Initialize-PSReminderDatabase.md) |  | Initialize a new PSReminder database. |
+| [Move-PSReminder](docs/Move-PSReminder.md) | *Archive-PSReminder* | Archive an expired PSReminder. |
+| [Open-PSReminderLiteHelp](docs/Open-PSReminderLiteHelp.md) |  | Open a PDF help file. |
+| [Remove-PSReminder](docs/Remove-PSReminder.md) | *rpsr* | Delete a PSReminder from the database. |
+| [Set-PSReminder](docs/Set-PSReminder.md) | *spsr* | Modify a PSReminder. |
 
 > *Screenshots might vary slightly from the current version.*
 
@@ -67,7 +70,7 @@ Initialize-PSReminderDatabase
 
 The default database is `$HOME\PSReminder.db.`
 
-```shell
+```powershell
 PS C:\> Get-Item $home\psreminder.db
 
     Directory: C:\Users\Jeff
@@ -83,21 +86,21 @@ Mode                 LastWriteTime         Length Name
 
 The module exports several variables that are used to control the behavior of the module.
 
-```shell
+```powershell
 PS C:\> Get-Variable PSReminder*
 
-Name                           Value
-----                           -----
+PSReminderAlertStyle
 PSReminderArchiveTable         ArchivedEvent
 PSReminderDB                   C:\Users\Jeff\PSReminder.db
 PSReminderDefaultDays          14
+PSReminderExpiredStyle
 PSReminderTable                EventData
-PSReminderTag                  {[Personal, ], [Testing, ], [travel, ], [Priority]…
+PSReminderTag                  {[Event, ],[Priority, ],[Holiday, ],…}
 ```
 
 You should not modify the table and `PSReminderDB` variables after you initialize a database. If you want your database to use different table names or a different location, modify these variables __*before*__ you initialize the database.
 
-The `PSReminderDefaultDays` is used to determine how many days in the future to display reminders. The module default is 7 days. You can change this value to whatever you prefer.
+The `PSReminderDefaultDays` variable is used to determine how many days in the future to display reminders. The module default is 7 days. You can change this value to whatever you prefer.
 
 ### Tags
 
@@ -134,11 +137,26 @@ There are no commands to add or remove tags. The `$PSReminderTag` variable is a 
 ```powershell
 $PSReminderTag.Add("Private","`e[38;5;133m")
 ```
-If you want to make the changes persistent, use `Export-PSreminderPreference` to save the changes.
+
+### Style
+
+When you display reminders with `Get-PSReminder`, event due within 24 hours are style according to an alert style. Events due within 48 hours are styled with a warning style. Expired events are styled with an expired style. Beginning in version 1.1.0, you can now customize these styles.
+
+```powershell
+$PSReminderAlertStyle = "`e[91m"
+$PSReminderWarningStyle = "`e[93m"
+$PSReminderExpiredStyle = "`e[9;38;5;163m"
+```
+
+You can see the values when you run `Get-PSReminderPreference`. Or if you save the object, you can invoke the `ShowStyle()` method.
+
+![ShowStyle](images/showstyle.png)
+
+> *These settings have been modified from the module defaults*
 
 ### :card_index: Exporting Preferences
 
-If you modify any of the PSReminder preference variables, it is recommended that you export them.
+If you modify any of the PSReminder preference variables and want to make them persistent, it is recommended that you export them.
 
 ```powershell
 Export-PSReminderPreference
@@ -152,8 +170,8 @@ When you import the module, if the `$HOME\.psreminder.json` file exists, it will
 
 To add a reminder, use the `Add-PSReminder` command. You must specify a date and time and a name for the event. You can optionally add a comment and/or tags.
 
-```shell
-PS C:\> Add-PSReminder -Date "9/1/2024 12:00PM" -EventName "Labor Day" -PassThru
+```powershell
+PS C:\> Add-PSReminder -Date "9/1/2024 12:00PM" -Event "Labor Day" -PassThru
 
 ID   Event     Comment               Date     Countdown
 --   -----     -------               ----     ---------
@@ -166,24 +184,23 @@ This command has aliases of `New-PSReminder` and `apsr`.
 
 The `Get-PSReminder` function has several self-explanatory parameters for displaying reminders from the database.
 
-```shell
-PS C:\> Get-Command Get-PSReminder -Syntax
+```powershell
+PS C:\> ( Get-Command  Get-PSReminder -Syntax) -replace "\[\<common.*",""
+Get-PSReminder [-Next <int>] [-DatabasePath <string>]
 
-Get-PSReminder [-Next <int>] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-Id <int>] [-DatabasePath <string>]
 
-Get-PSReminder [-Id <int>] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-EventName <string>] [-DatabasePath <string>]
 
-Get-PSReminder [-EventName <string>] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-All] [-DatabasePath <string>]
 
-Get-PSReminder [-All] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-Expired] [-DatabasePath <string>]
 
-Get-PSReminder [-Expired] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-Archived] [-DatabasePath <string>]
 
-Get-PSReminder [-Archived] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-Year <int>] [-Month <int>] [-DatabasePath <string>]
 
-Get-PSReminder [-Year <int>] [-Month <int>] [-DatabasePath <string>] [<CommonParameters>]
-
-Get-PSReminder [-Tag <string>] [-DatabasePath <string>] [<CommonParameters>]
+Get-PSReminder [-Tag <string>] [-DatabasePath <string>]
 ```
 
 The default is to display reminders for the next X number day as defined by the `$PSReminderDefaultDays` variable.
@@ -192,7 +209,7 @@ The default is to display reminders for the next X number day as defined by the 
 
 You can modify a reminder with the `Set-PSReminder` command. You must specify the ID of the reminder you want to modify. You can change the date, event name, comment, and tags.
 
-```shell
+```powershell
 PS C:\> Set-PSReminder -ID 1107 -Tags Personal
 PS C:\> Set-PSReminder -id 1108 -Comment "online" -PassThru
 
@@ -219,7 +236,8 @@ Class PSReminder {
     hidden [string]$ComputerName = [System.Environment]::MachineName
 
     #constructor
-    PSReminder([int32]$ID, [String]$Event, [DateTime]$Date, [String]$Comment, [String[]]$Tags) {
+    PSReminder([int32]$ID, [String]$Event, [DateTime]$Date,
+    [String]$Comment, [String[]]$Tags) {
         $this.ID = $ID
         $this.Event = $Event
         $this.Date = $Date
@@ -243,7 +261,9 @@ Class ArchivePSReminder {
     #add a hidden property to capture the computer name'
     hidden [string]$ComputerName = [System.Environment]::MachineName
 
-    ArchivePSReminder([int32]$ID,[String]$Event,[DateTime]$Date,[String]$Comment,[String[]]$Tags, [DateTime]$ArchivedDate) {
+    ArchivePSReminder([int32]$ID,[String]$Event,[DateTime]$Date,
+    [String]$Comment,[String[]]$Tags,
+     [DateTime]$ArchivedDate) {
         $this.ID = $ID
         $this.Event = $Event
         $this.Date = $Date
@@ -262,20 +282,24 @@ Class PSReminderPreference {
 
     [object]ShowTags () {
         $r = $this.PSReminderTag.GetEnumerator() | Foreach-Object {
-            $stringValue = $_.Value.Replace("$([char]27)", '`e')
-            [PSCustomObject]@{
-                PSTypeName = 'PSReminderTag'
-                Tag        = $_.Key
-                Style      = '{0}{1}{2}' -f $($_.Value), $stringValue, $("`e[0m")
-            }
+          $stringValue = $_.Value.Replace("$([char]27)", '`e')
+          [PSCustomObject]@{
+              PSTypeName = 'PSReminderTag'
+              Tag        = $_.Key
+              Style      = '{0}{1}{2}' -f $($_.Value), $stringValue,
+              $("`e[0m")
+          }
         }
         return $r
     }
 } #close PSReminderPreference class
 
-Update-TypeData -TypeName PSReminder -DefaultDisplayPropertySet ID, Date, Event, Comment -Force
-Update-TypeData -TypeName PSReminder -MemberType AliasProperty -MemberName Name -Value Event -Force
-Update-TypeData -Typename PSReminder -MemberType ScriptProperty -MemberName Countdown -value {
+Update-TypeData -TypeName PSReminder -DefaultDisplayPropertySet ID,Date,
+Event,Comment -Force
+Update-TypeData -TypeName PSReminder -MemberType AliasProperty
+-MemberName Name -Value Event -Force
+Update-TypeData -Typename PSReminder -MemberType ScriptProperty
+-MemberName Countdown -value {
     $ts = $this.Date - (Get-Date)
     if ($ts.TotalMinutes -lt 0) {
         $ts = New-TimeSpan -Minutes 0
@@ -302,7 +326,7 @@ This is a manual process because you may want to review and adjust expired event
 
 You can use `Get-PSReminder` to view archived events.
 
-```shell
+```powershell
 PS C:\> Get-PSReminder -Archived | Select-Object -last 3
 
 ID   Event              Comment Date                 ArchivedDate
@@ -318,7 +342,7 @@ The default display using `Get-PSReminder` uses a custom formatting file. The de
 
 ![Expired formatting](images/expired-psreminder.png)
 
-Items that will be due in 24 hours will be highlighted in red. Items that are due in 48 hours will be highlighted in yellow. Otherwise, if the item is tagged and there is a definition in $PSReminderTag`, the ANSI escape sequence will be used.
+Items that will be due in 24 hours will be highlighted in red. Items that are due in 48 hours will be highlighted in yellow. Otherwise, if the item is tagged and there is a definition in `$PSReminderTag`, the ANSI escape sequence will be used.
 
 ![PSReminder display](images/psreminder-formatting.png)
 
@@ -326,7 +350,7 @@ In this example, the last item is tagged as `Work` and the ANSI escape sequence 
 
 There is also a custom table view called `Date` which will group reminders by custom property of `Month Year`.
 
-```shell
+```powershell
 PS C:\> Get-PSReminder | Format-Table -view date
 PS C:\> Get-PSReminder -days 45 | Format-Table -view date
 
@@ -345,7 +369,7 @@ ID     Event                     Comment        Date
 1112   Alpha Meeting                            8/1/2024 8:00:00 AM
 1108   PSTweetChat               online         8/2/2024 1:00:00 PM
 1075   Cmdlet Working Group                     8/7/2024 12:00:00 PM
-076   Cmdlet Working Group                      8/21/2024 12:00:00 PM
+ 076   Cmdlet Working Group                     8/21/2024 12:00:00 PM
 
    Month: Sep 2024
 
@@ -358,14 +382,13 @@ This view does not use tag highlighting.
 
 `Get-PSReminderPreference` will display the current preference settings using a custom view.
 
-
 ![Get-PSReminderPreference](images/get-psreminderpreference.png)
 
 ## :ballot_box_with_check: Database Management
 
 You can use the `Get-PSReminderDBInformation` command to get a summary of the database tables and the number of records in each table.
 
-```shell
+```powershell
 PS C:\> Get-PSReminderDBInformation
 
    Database: C:\Users\Jeff\PSReminder.db [80KB]
@@ -377,7 +400,7 @@ Age         Reminders Expired Archived
 
 This is a rich object.
 
-```shell
+```powershell
 PS C:\> Get-PSReminderDBInformation | Select-Object *
 
 Age           : 1.14:54:09.4753532
@@ -403,7 +426,7 @@ Computername  : PROSPERO
 
 The object has a `RefreshInfo()` method. If you save the object to a variable, you can refresh the object with the current database information.
 
-```shell
+```powershell
 PS C:\> $db = Get-PSReminderDBInformation
 PS C:\> $db.GetType().Name
 PSReminderDBInfo
@@ -448,16 +471,20 @@ The default behavior is to create a new database file using the `$PSReminderDB` 
 
 The parameters for `Add-PSReminder` accept pipeline input for new events. This makes it easy to import data from a CSV file.
 
-```shell
+```powershell
 PS C:\> Import-Csv C:\temp\reminder.csv | Add-PSReminder -Verbose -PassThru
 VERBOSE: [14:45:36.8202189 BEGIN  ] Starting Add-PSReminder
 VERBOSE: [14:45:36.8203945 BEGIN  ] Running under PowerShell version 7.4.3
 VERBOSE: [14:45:36.8209222 PROCESS] Adding event 'Alpha Meeting'
-VERBOSE: Performing the operation "Add-PSReminder" on target "[2024-08-01 08:00:00] ".
-VERBOSE: [14:45:36.8211739 PROCESS] INSERT INTO EventData (EventDate,EventName,EventComment,Tags) VALUES ('2024-08-01 08:00:00','Alpha Meeting','','testing')
+VERBOSE: Performing the operation "Add-PSReminder" on target
+"[2024-08-01 08:00:00] ".
+VERBOSE: [14:45:36.8211739 PROCESS] INSERT INTO EventData (EventDate,EventName,
+EventComment,Tags) VALUES ('2024-08-01 08:00:00','Alpha Meeting','','testing')
 VERBOSE: [14:45:36.8591463 PROCESS] Adding event 'Alpha Meeting 2'
-VERBOSE: Performing the operation "Add-PSReminder" on target "[2024-08-15 08:00:00] ".
-VERBOSE: [14:45:36.8597296 PROCESS] INSERT INTO EventData (EventDate,EventName,EventComment,Tags) VALUES ('2024-08-15 08:00:00','Alpha Meeting 2','','testing')
+VERBOSE: Performing the operation "Add-PSReminder" on target
+"[2024-08-15 08:00:00] ".
+VERBOSE: [14:45:36.8597296 PROCESS] INSERT INTO EventData (EventDate,EventName,
+EventComment,Tags) VALUES ('2024-08-15 08:00:00','Alpha Meeting 2','','testing')
 VERBOSE: [14:45:36.8717859 END    ] Ending Add-PSReminder
 ID   Event           Comment               Date    Countdown
 --   -----           -------               ----    ---------
@@ -467,12 +494,21 @@ ID   Event           Comment               Date    Countdown
 
 ### :x: Removing Data
 
-If you need to delete a reminder, use the `Remove-PSReminder` command. You must specify the ID of the reminder you want to delete, although you can take advantage of the pipeline.
+If you need to delete a reminder, use the [`Remove-PSReminder`](docs/Remove-PSReminder.md) command. You must specify the ID of the reminder you want to delete, although you can take advantage of the pipeline.
 
-```shell
-PS C:\> Get-PSReminder -Tag Testing | Remove-PSReminder -WhatIf
+```powershell
+PS C:\> Get-PSReminder -Tag Testing | Remove-PSReminder -Category Reminder -WhatIf
 What if: Performing the operation "Remove-PSReminder" on target "Event ID 1110".
 What if: Performing the operation "Remove-PSReminder" on target "Event ID 1111"
+```
+
+You might want to export items before deleting them:
+
+```powershell
+PS C:\> Get-PSReminder -Archived | where tags -contains holiday |
+ConvertTo-Json | Out-File d:\temp\archived-holidays.json
+PS C:\> Get-PSReminder -Archived | where tags -contains holiday |
+Remove-PSReminder -Category Archived
 ```
 
 > *Removing an item may affect ID numbering which auto increments. This is not a major problem but be aware that your IDs may not be sequential if you remove newly added items.*
@@ -487,7 +523,7 @@ When ready export the Tickle database.
 Export-TickleDatabase -Path c:\temp\tickledb.xml
 ```
 
-It is expected that if you are migrating data you do not have an existing PSReminder database. If you do, you will need to **delete it**. If you don't, you will get a warning when you try to import the data.
+It is expected that if you are migrating data you do not have into an existing PSReminder database. If you do, you will need to __delete it__. If you don't, you will get a warning when you try to import the data.
 
 Now, import the data into a new PSReminder database
 
@@ -502,7 +538,8 @@ That's it! Archived events will be added to the archive table. Everything else w
 You may want to tag the imported events. You can do this with the `Set-PSReminder` command.
 
 ```powershell
-Get-PSReminder | where name -match `PSHSummit` | Set-PSReminder -Tags travel,event
+Get-PSReminder | where name -match `PSHSummit` |
+Set-PSReminder -Tags travel,event
 ```
 
 It is recommended that you archive expired events.
@@ -529,10 +566,17 @@ The command is still using the `Verbose` message stream, but the message text ha
 
 This module has had minimal testing on non-Windows platforms. If you find a problem, please post an Issue. The module does not have commands for the following activities, although some of these items could be scripted using `Invoke-mySqliteQuery`.
 
-- There is no way to remove or modify items from the archive table.
-- The default formatting for 24 and 48-hour reminders is hard-coded and not user-definable. This might change in a future release.
-- The database is not password-protected.
+- The database is not password-protected, although it is on the wish list.
+- There are no module commands to modify items from the archive table, however you can delete them.
 - There are no module commands for modifying the database metadata table.
+
+## Related Projects
+
+If find this project useful, you might also be interested in these other projects:
+
+- [PSProjectStatus] - A PowerShell module for tracking project status and tasks.
+- [PSWorkItem] - A PowerShell 7 module for managing work and personal tasks or to-do items.
+- [PSCalendar] - A set of PowerShell commands for displaying calendars in the console.
 
 ## :arrow_forward: Roadmap
 
@@ -544,3 +588,6 @@ There aren't many enhancements planned for this module. If there is something yo
 
 [MyTickle]: https://github.com/jdhitsolutions/myTickle
 [MySqlite]: https://github.com/jdhitsolutions/MySQLite
+[PSProjectStatus]: https://github.com/jdhitsolutions/PSProjectStatus
+[PSWorkItem]: https://github.com/jdhitsolutions/PSWorkItem
+[PSCalendar]: https://github.com/jdhitsolutions/PSCalendar

@@ -7,16 +7,16 @@ This module is a port of the MyTickle module. The original module used an instan
 
 Once the module is installed, you can run `Get-AboutPSReminder` to see the module information.
 
-```shell
+```powershell
 PS C:\> Get-AboutPSReminder
 
 ModuleName    : PSReminderLite
-Version       : 0.5.0
+Version       : 1.1.0
 MySQLite      : 0.14.0
 SQLiteVersion : 3.42.0
-PSVersion     : 7.4.3
+PSVersion     : 7.5.2
 Platform      : Win32NT
-Host          : ConsoleHost
+Host          : ConsoleHos
 ```
 
 This may be helpful when filing an issue or asking for help.
@@ -33,7 +33,7 @@ Initialize-PSReminderDatabase
 
 The default database is `$HOME\PSReminder.db.`
 
-```shell
+```powershell
 PS C:\> Get-Item $home\psreminder.db
 
     Directory: C:\Users\Jeff
@@ -49,7 +49,7 @@ Mode                 LastWriteTime         Length Name
 
 The module exports several variables that are used to control the behavior of the module.
 
-```shell
+```powershell
 PS C:\> Get-Variable PSReminder*
 
 Name                           Value
@@ -119,7 +119,7 @@ ID   Event     Comment Date                  Countdown
 
 The `Get-PSReminder` function has several self-explanatory parameters for displaying reminders from the database.
 
-```shell
+```powershell
 PS C:\> Get-Command Get-PSReminder -Syntax
 
 Get-PSReminder [-Next <int>] [-DatabasePath <string>] [<CommonParameters>]
@@ -146,7 +146,7 @@ The default is to display reminders for the next X number day as defined by the 
 
 You can modify a reminder with the `Set-PSReminder` command. You must specify the ID of the reminder you want to modify. You can change the date, event name, comment, and tags.
 
-```shell
+```powershell
 PS C:\> Set-PSReminder -ID 1107 -Tags Personal
 PS C:\> Set-PSReminder -id 1108 -Comment "online" -PassThru
 
@@ -236,7 +236,7 @@ This is a manual process because you may want to review and adjust expired event
 
 You can use `Get-PSReminder` to view archived events.
 
-```shell
+```powershell
 PS C:\> Get-PSReminder -Archived | Select-Object -last 3
 
 ID   Event              Comment Date                 ArchivedDate
@@ -254,7 +254,7 @@ Items that will be due in 24 hours will be highlighted in red. Items that are du
 
 There is also a custom table view called `Date` which will group reminders by custom property of `Month Year`.
 
-```shell
+```powershell
 PS C:\> Get-PSReminder | Format-Table -view date
 PS C:\> Get-PSReminder -days 45 | Format-Table -view date
 
@@ -288,7 +288,7 @@ This view does not use tag highlighting.
 
 You can use `Get-PSReminderDBInformation` command to get a summary of the database tables and the number of records in each table.
 
-```shell
+```powershell
 PS C:\> Get-PSReminderDBInformation
 
    Database: C:\Users\Jeff\PSReminder.db [80KB]
@@ -300,7 +300,7 @@ Age         Reminders Expired Archived
 
 This is a rich object.
 
-```shell
+```powershell
 PS C:\> Get-PSReminderDBInformation | Select-Object *
 
 Name          : PSReminder.db
@@ -348,7 +348,7 @@ The default behavior is to create a new database file using the `$PSReminderDB` 
 
 The parameters for `Add-PSReminder` accept pipeline input for new events. This makes it easy to import data from a CSV file.
 
-```shell
+```powershell
 PS C:\> Import-Csv C:\temp\reminder.csv | Add-PSReminder -Verbose -PassThru
 VERBOSE: [14:45:36.8202189 BEGIN  ] Starting Add-PSReminder
 VERBOSE: [14:45:36.8203945 BEGIN  ] Running under PowerShell version 7.4.3
@@ -367,10 +367,10 @@ ID   Event           Comment Date                  Countdown
 
 ### Removing Data
 
-If you need to delete a reminder, use the `Remove-PSReminder` command. You must specify the ID of the reminder you want to delete, although you can take advantage of the pipeline.
+If you need to delete a reminder, use the `Remove-PSReminder` command. You must specify the ID of the reminder, although you can take advantage of the pipeline. You also will have to specify the corresponding category
 
-```shell
-PS C:\> Get-PSReminder -Tag Testing | Remove-PSReminder -WhatIf
+```powershell
+PS C:\> Get-PSReminder -Tag Testing | Remove-PSReminder -Category Reminder -WhatIf
 What if: Performing the operation "Remove-PSReminder" on target "Event ID 1110".
 What if: Performing the operation "Remove-PSReminder" on target "Event ID 1111"
 ```
@@ -379,11 +379,7 @@ What if: Performing the operation "Remove-PSReminder" on target "Event ID 1111"
 
 # NOTE
 
-This module has had minimal testing on non-Windows platforms. If you find a problem, please post an Issue. The module does not have commands for the following activities, although some of these items could be scripted using `Invoke-mySqliteQuery`.
-
-- There is no way to remove items from the archive table.
-- The default formatting for 24 and 48-hour reminders is hard-coded and not user-definable.
-- The database is not password-protected.
+This module has had minimal testing on non-Windows platforms. If you find a problem, please post an Issue.
 
 # TROUBLESHOOTING NOTE
 

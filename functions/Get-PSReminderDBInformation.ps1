@@ -13,6 +13,10 @@ Function Get-PSReminderDBInformation {
         $PSDefaultParameterValues['_verbose:block'] = 'Begin'
         _verbose ($strings.Starting -f $($MyInvocation.MyCommand))
         _verbose ($strings.PSVersion -f $($PSVersionTable.PSVersion))
+        _verbose ($strings.UsingHost -f $host.Name)
+        _verbose ($strings.UsingOS -f $PSVersionTable.OS)
+        _verbose ($strings.UsingModule -f $ModuleVersion)
+        _verbose ($strings.UsingMySQLite -f (Get-Module mySQLite).version)
     } #begin
     Process {
             [PSReminderDBInfo]::New($DatabasePath)

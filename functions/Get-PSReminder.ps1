@@ -38,6 +38,7 @@ Function Get-PSReminder {
         [Parameter(HelpMessage = 'Select reminders by a tag', ParameterSetName = 'Tag')]
         [SupportsWildcards()]
         [ValidateNotNullOrEmpty()]
+        [ArgumentCompleter({$PSReminderTag.GetEnumerator().Name})]
         [String]$Tag,
         [Parameter(HelpMessage = 'The path to the SQLite database')]
         [ValidateNotNullOrEmpty()]
@@ -46,7 +47,6 @@ Function Get-PSReminder {
     )
 
     Begin {
-
         $PSDefaultParameterValues['_verbose:Command'] = $MyInvocation.MyCommand
         $PSDefaultParameterValues['_verbose:block'] = 'Begin'
         _verbose $($strings.Starting -f $($MyInvocation.MyCommand))

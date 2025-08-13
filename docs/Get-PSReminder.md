@@ -1,7 +1,7 @@
 ---
 external help file: PSReminderLite-help.xml
 Module Name: PSReminderLite
-online version:
+online version: https://jdhitsolutions.com/yourls/b1bf73
 schema: 2.0.0
 ---
 
@@ -67,7 +67,7 @@ This command will query the PSReminder database and return matching events. The 
 
 ## EXAMPLES
 
-### Example 1
+### Example 1: Get reminders by default days
 
 ```powershell
 PS C:\> Get-PSReminder
@@ -82,7 +82,7 @@ ID   Event                      Comment                 Date    Countdown
 
 The default is to get reminders due in the next number of days defined in $PSReminderDefaultDays. The output will be color code. Events due within 24 hours will be red, and events due within 48 hours will be yellow.
 
-### Example 2
+### Example 2: Get a reminder by ID
 
 ```powershell
 PS C:\> Get-PSReminder -id 19 | Select-Object *
@@ -97,7 +97,7 @@ Expired : False
 
 The object has extended properties defined.
 
-### Example 3
+### Example 3: Get all reminders
 
 ```powershell
 PS C:\> Get-PSReminder -All | Format-Table -view date
@@ -293,6 +293,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 This command has an alias of gpsr.
+
+Learn more about PowerShell: http://jdhitsolutions.com/yourls/newsletter
 
 ## RELATED LINKS
 

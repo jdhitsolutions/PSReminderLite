@@ -28,6 +28,27 @@ https://github.com/jdhitsolutions/PSScriptTools
               </ExpressionBinding>
               <ExpressionBinding>
                 <ScriptBlock>
+                    "$($PSStyle.Bold)$($PSStyle.Underline)PSReminderStyle$($PSStyle.Reset)"
+                </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine/>
+              <NewLine/>
+                <ExpressionBinding>
+                <ScriptBlock>
+                   "  $($PSStyle.Underline)$($PSStyle.Formatting.TableHeader){0}$($PSStyle.Reset)                     $($PSStyle.Underline)$($PSStyle.Formatting.TableHeader){1}$($PSStyle.Reset)`n" -f 'Name','Style'
+                </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+              <ScriptBlock>
+                    $_.PSObject.Properties.where({$_.Name -match "style$"})| Foreach-Object {
+                      $ansi =  $_.value.Replace('`e',"$([char]27)" )
+                      "  {0}{1}{2}{3}" -f $($_.Name.PadRight(25)),$ansi,$_.Value,"`e[0m"
+                    } | Out-String
+              </ScriptBlock>
+              </ExpressionBinding>
+              <NewLine/>
+              <ExpressionBinding>
+                <ScriptBlock>
                     "$($PSStyle.Bold)$($PSStyle.Underline)PSReminderTags$($PSStyle.Reset)"
                 </ScriptBlock>
               </ExpressionBinding>
@@ -41,7 +62,7 @@ https://github.com/jdhitsolutions/PSScriptTools
               <ExpressionBinding>
                 <ScriptBlock>
                     $_.PSReminderTag.GetEnumerator() | Foreach-Object {
-                      "  {0}{1}{2}`e[0m" -f ($_.Key).Padright(15),$_.Value,$($_.value.replace("`e",'`e'))
+                      "  {0}{1}{2}`e[0m" -f ($_.Key).PadRight(15),$_.Value,$($_.value.replace("`e",'`e'))
                     } | Out-String
                 </ScriptBlock>
               </ExpressionBinding>
@@ -89,7 +110,7 @@ https://github.com/jdhitsolutions/PSScriptTools
               <TableColumnItem>
                 <PropertyName>PSReminderTable</PropertyName>
               </TableColumnItem>
-              <TableColumnItem>
+               <TableColumnItem>
                 <PropertyName>PSReminderArchiveTable</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
