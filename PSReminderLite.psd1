@@ -3,7 +3,7 @@
 #
 @{
     RootModule           = 'PSReminderLite.psm1'
-    ModuleVersion        = '1.1.0'
+    ModuleVersion        = '1.1.1'
     CompatiblePSEditions = 'Core'
     GUID                 = 'f28fb1d9-ea07-4c22-a160-570fb3c092d8'
     Author               = 'Jeff Hicks'

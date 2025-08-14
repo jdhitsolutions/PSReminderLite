@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-08-14
+
+### Fixed
+
+- Fixed code in root module that was getting the module version number.
+
 ## [1.1.0] - 2025-08-13
 
 ### Added
@@ -62,5 +68,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Documentation corrections.
 
 
-[Unreleased]: https://github.com/jdhitsolutions/PSReminderLite/compare/v1.1.0..HEAD
+[Unreleased]: https://github.com/jdhitsolutions/PSReminderLite/compare/v1.1.1..HEAD
+[1.1.1]: https://github.com/jdhitsolutions/PSReminderLite/compare/v1.1.0..v1.1.1
 [1.1.0]: https://github.com/jdhitsolutions/PSReminderLite/compare/v1.0.0..v1.1.0

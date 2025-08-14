@@ -19,11 +19,14 @@ ForEach-Object { . $_.FullName }
 
 #region Define module variables
 
-$moduleName = Split-Path -Path $PSScriptRoot -Leaf
-$manifest = Join-Path -Path $PSScriptRoot -ChildPath "$moduleName.psd1"
+#14 August 2025 - fixed module path parsing to allow for version folders
+$modulePath = Split-Path -Path $MyInvocation.MyCommand.source
+$moduleName = $MyInvocation.MyCommand -replace "psm1","psd1"
+$manifest = Join-Path -Path $modulePath -ChildPath $moduleName
 $in = Import-PowerShellDataFile -Path $manifest
 $moduleVersion = $in.moduleVersion
 #Write-Host "Importing $manifest version $moduleVersion" -fore green
+
 $ExportPath = Join-Path -Path $HOME -ChildPath '.psreminder.json'
 if (Test-Path -Path $ExportPath) {
     #use the preference file
